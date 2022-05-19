@@ -140,7 +140,22 @@ public class Amazons {
         return in.nextInt();
     }
 
-    public static boolean checkWinner(int player) { // checks if player 1 or 2 won
+    public static boolean checkLoser(int[][] board, int player) { // checks if the player lost
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                if (board[r][c] == player) { // checking for location of the amazons
+                    for (int i = 0; i < board.length; i++) {
+                        for (int j = 0; j < board[0].length; j++) {
+                            if (board[i][j] == 0) {
+                                if (isLegalMove(board, r, c, i, j)) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return true;
     }
 
@@ -157,13 +172,15 @@ public class Amazons {
                     return false;
                 }
             }
-        } else { // diagonal
+        } else if ((currCol - moveCol) == (currRow - moveRow)) { // diagonal
             for (int a = 0; a < Math.abs(currRow-moveRow); a++) {
                 if (board[Math.min(currRow+1, moveRow) + a][Math.min(currCol+1, moveCol) + a] != 0) {
                     System.out.println(board[Math.min(currRow+1, moveRow) + a][Math.min(currCol+1, moveCol)+a]);
                     return false;
                 }
             }
+        } else { // not diagonal, horizontal or vertical
+            return false;
         }
         return true;
     }
