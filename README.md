@@ -1,9 +1,8 @@
 # GameOfAmazons
 
-This is a text-based simulation of two-player Game of the Amazons. 
-(AI to be developed later)
+This is a text-based simulation of two-player Game of the Amazons. (AI to be developed later)
 
-## Rules 
+## Rules
 
 Invented in 1988 by Walter Zamkauskas from Argentina, *Game of the Amazons* is a strategy game with similarities to chess and go. Like other popular combinatorial games such as Nim and Domineering, Game of the Amazons is simple but deceivingly fun.
 
@@ -11,8 +10,8 @@ The game is typically played on a 10x10 chessboard, set up with four white and f
 
 As the game progresses, possible moves will become increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).
 
-# Strategy
+## Strategy
 
 ## Other information
 
-Determining the winner of Game of the Amazons is NP-hard. 
+Determining the winner of Game of the Amazons is NP-hard.
