@@ -29,9 +29,30 @@ public class Amazons {
             int moveCol = moveCol(pt);
             int arrowRow = arrowRow(pt);
             int arrowCol = arrowCol(pt);
+            
+            // checking legality
+            if (board[amazonsRow][amazonsCol] != pt) {
+                System.out.println("That's not your piece.");
+            }
             if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
                 board[amazonsRow][amazonsCol] = 0;
                 board[moveRow][moveCol] = pt;
+            } else {
+                System.out.println("Not legal.");
+                //ADD STUFF TO ALLOW LEGAL MOVE
+            }
+            if (isLegalMove(board, amazonsRow, amazonsCol, arrowRow, arrowCol)) {
+                board[arrowRow][arrowCol] = 3;
+            } else {
+                System.out.println("Not legal.");
+            }
+
+            // next player's turn
+            pt++;
+            if (pt % 2 == 0) {
+                pt = 2;
+            } else {
+                pt = 1;
             }
         }
 
