@@ -14,12 +14,12 @@ As the game progresses, possible moves will become increasingly limited. The las
 
 Much of the game is based on "territorial average," a concept used in my program to predict the winner of the game without .
 
-# AI algorithm
+## AI algorithm
 
 ## Other information
 
 Determining the winner of Game of the Amazons is NP-hard.
 
-# APCS Class 
+## APCS Class
 
 Written for APCS class, and I learned more combinatorial game theory as a bonus. 

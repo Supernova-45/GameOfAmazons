@@ -166,31 +166,38 @@ public class Amazons {
         return in.nextInt();
     }
 
-    public static int[][] move(int[][] board, int pt) {
-        int[][] newBoard = board;
-
+    public static int[][] move(int[][] board, int pt) { // can only make an unlegal move once
+    
         int amazonsRow = amazonsRow(pt);
         int amazonsCol = amazonsCol(pt);
-        int moveRow = moveRow(pt);
-        int moveCol = moveCol(pt);
-        int arrowRow = arrowRow(pt);
-        int arrowCol = arrowCol(pt);
-
         // checking legality
         if (board[amazonsRow][amazonsCol] != pt) {
             System.out.println("That's not your piece.");
+            amazonsRow = amazonsRow(pt);
+            amazonsCol = amazonsCol(pt);
         }
+
+        int moveRow = moveRow(pt);
+        int moveCol = moveCol(pt);
+
         if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
             board[amazonsRow][amazonsCol] = 0;
             board[moveRow][moveCol] = pt;
         } else {
             System.out.println("Not legal.");
-            //ADD STUFF TO ALLOW LEGAL MOVE
+            moveRow = moveRow(pt);
+            moveCol = moveCol(pt);
         }
+
+        int arrowRow = arrowRow(pt);
+        int arrowCol = arrowCol(pt);
+
         if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
             board[arrowRow][arrowCol] = 3;
         } else {
             System.out.println("Not legal.");
+            arrowRow = arrowRow(pt);
+            arrowCol = arrowCol(pt);
         }
         
         return board;
@@ -296,7 +303,7 @@ public class Amazons {
             System.out.println("Players alternate moves, and white starts. Each turn, an Amazon moves to a square, then shoots an arrow (orthogonally or diagonally) to burn that square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. As the game progresses, possible moves will become increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).");
         }
         System.out.println();
-        System.out.println("This is a two player game: o is player 1, and x is player 2. Do you want to play on a 10x10, 8x8, 6x6, or 5x5?");
+        System.out.println("This is a two player game: o is player 1, and x is player 2. Do you want to play on a 10x10, 8x8, 6x6, or 5x5? (type 10, 8, 6, or 5)");
         return in.nextInt();
     }
 }
