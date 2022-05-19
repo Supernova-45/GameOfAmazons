@@ -4,9 +4,11 @@ public class Amazons {
     public static void main(String[] args) {
         // SETUP
         Scanner in = new Scanner(System.in);
-        int[][] board = initialBoard(10);
 
-        startGame();
+        int size = startGame();
+        int[][] board = initialBoard(size);
+
+        System.out.println("Let's begin!");
 
         // GAMEPLAY 
         boolean gameOver = false;
@@ -52,7 +54,12 @@ public class Amazons {
 
     // formats the board so that it's readable
     public static String printBoard(int[][] board) {
-        String printBoard = "\n  0 1 2 3 4 5 6 7 8 9 \n";
+        String printBoard = "\n ";
+        for (int i = 0; i < board.length; i++) {
+            printBoard += i + " ";
+        }
+        printBoard += "\n";
+
         for (int r = 0; r < board.length; r++) {
             printBoard += r + " ";
             for (int c = 0; c < board[0].length; c++) { // 0s are open, 1s have queens, 2s are blocked
@@ -79,17 +86,47 @@ public class Amazons {
                 board[r][c] = 0;
             }
         }
-        // black queens
-        board[0][3] = 1;
-        board[0][6] = 1;
-        board[3][0] = 1;
-        board[3][9] = 1;
-        // white queens
-        board[6][0] = 2;
-        board[6][9] = 2;
-        board[9][3] = 2;
-        board[9][6] = 2;
-
+        if (size == 10) {
+            // black queens
+            board[0][3] = 1;
+            board[0][6] = 1;
+            board[3][0] = 1;
+            board[3][9] = 1;
+            // white queens
+            board[6][0] = 2;
+            board[6][9] = 2;
+            board[9][3] = 2;
+            board[9][6] = 2;
+        } else if (size == 8) {
+             // black queens
+             board[0][3] = 1;
+             board[1][7] = 1;
+             board[2][0] = 1;
+             // white queens
+             board[5][7] = 2;
+             board[6][0] = 2;
+             board[7][4] = 2;
+        } else if (size == 6) {
+            // black queens
+            board[0][3] = 1;
+            board[5][2] = 1;
+            // white queens
+            board[2][0] = 2;
+            board[3][5] = 2;
+        } else if (size == 5) {
+            // black queens
+            board[0][1] = 1;
+            board[0][3] = 1;
+            board[1][0] = 1;
+            board[1][4] = 1;
+            // white queens
+            board[3][0] = 2;
+            board[3][4] = 2;
+            board[4][1] = 2;
+            board[4][3] = 2;
+        } else {
+            System.out.println("Not a valid size.");
+        }
         return board;
     }
 
@@ -212,7 +249,7 @@ public class Amazons {
         return true;
     }
 
-    public static void startGame() {
+    public static int startGame() { // returns size
         Scanner in = new Scanner(System.in);
 
         System.out.println("-----------------------------------");
@@ -224,6 +261,7 @@ public class Amazons {
             System.out.println("Players alternate moves, and white starts. Each turn, an Amazon moves to a square, then shoots an arrow (orthogonally or diagonally) to burn that square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. As the game progresses, possible moves will become increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).");
         }
         System.out.println();
-        System.out.println("Let's begin! This is a two player game: o is player 1, and x is player 2.");
+        System.out.println("This is a two player game: o is player 1, and x is player 2. Do you want to play on a 10x10, 8x8, 6x6, or 5x5?");
+        return in.nextInt();
     }
 }
