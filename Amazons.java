@@ -6,58 +6,62 @@ public class Amazons {
         Scanner in = new Scanner(System.in);
         int[][] board = initialBoard(10);
 
-        System.out.println("-----------------------------------");
-        System.out.println("| WELCOME TO GAME OF THE AMAZONS! | ");
-        System.out.println("-----------------------------------");
-        System.out.println();
-        System.out.println("Would you like to review the rules? (y/n)");
-        if (in.next().equalsIgnoreCase("Y")) {
-            System.out.println(rules());
-        }
-        System.out.println();
-        System.out.println("Let's begin! This is a two player game: o is player 1, and x is player 2.");
+        startGame();
 
         // GAMEPLAY 
         boolean gameOver = false;
-        int pt = 1; // pt = player turn, player 1
+        boolean wantPlay = true;
 
-        while (!gameOver) {
-            System.out.println(printBoard(board));
-            int amazonsRow = amazonsRow(pt);
-            int amazonsCol = amazonsCol(pt);
-            int moveRow = moveRow(pt);
-            int moveCol = moveCol(pt);
-            int arrowRow = arrowRow(pt);
-            int arrowCol = arrowCol(pt);
+        while (wantPlay) {
+
+            int pt = 1; // pt = player turn, player 1
+
+            while (!gameOver) {
+                System.out.println(printBoard(board));
+                int amazonsRow = amazonsRow(pt);
+                int amazonsCol = amazonsCol(pt);
+                int moveRow = moveRow(pt);
+                int moveCol = moveCol(pt);
+                int arrowRow = arrowRow(pt);
+                int arrowCol = arrowCol(pt);
+
+                // checking legality
+                if (board[amazonsRow][amazonsCol] != pt) {
+                    System.out.println("That's not your piece.");
+                }
+                if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
+                    board[amazonsRow][amazonsCol] = 0;
+                    board[moveRow][moveCol] = pt;
+                } else {
+                    System.out.println("Not legal.");
+                    //ADD STUFF TO ALLOW LEGAL MOVE
+                }
+                if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
+                    board[arrowRow][arrowCol] = 3;
+                } else {
+                    System.out.println("Not legal.");
+                }
+
+                // check for winners, see if they want to play again
+                if (checkWinner(board, pt) == true) {
+                    System.out.println("Congratulations player " + pt + ", you've triumphed!");
+                    gameOver = true;
+                }
+
+                // next player's turn
+                pt++;
+                if (pt % 2 == 0) {
+                    pt = 2;
+                } else {
+                    pt = 1;
+                }
+            }
             
-            // checking legality
-            if (board[amazonsRow][amazonsCol] != pt) {
-                System.out.println("That's not your piece.");
-            }
-            if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
-                board[amazonsRow][amazonsCol] = 0;
-                board[moveRow][moveCol] = pt;
-            } else {
-                System.out.println("Not legal.");
-                //ADD STUFF TO ALLOW LEGAL MOVE
-            }
-            if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
-                board[arrowRow][arrowCol] = 3;
-            } else {
-                System.out.println("Not legal.");
-            }
-
-            // check for winners, see if they want to play again
-
-            // next player's turn
-            pt++;
-            if (pt % 2 == 0) {
-                pt = 2;
-            } else {
-                pt = 1;
+            System.out.println("Would you like to play again? (y/n)");
+            if (in.next().equalsIgnoreCase("N")) {
+                wantPlay = false;
             }
         }
-
         in.close();
     }
 
@@ -140,7 +144,19 @@ public class Amazons {
         return in.nextInt();
     }
 
-    public static boolean checkLoser(int[][] board, int player) { // checks if the player lost
+    public static void move(int player) {
+        
+    }
+
+    public static boolean checkWinner(int[][] board, int player) { // checks if player won by seeing if other player has a move
+        // next player's turn
+        player++;
+        if (player % 2 == 0) {
+            player = 2;
+        } else {
+            player = 1;
+        }
+
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
                 if (board[r][c] == player) { // checking for location of the amazons
@@ -185,8 +201,18 @@ public class Amazons {
         return true;
     }
 
-    public static String rules() {
-        return "Players alternate moves, and white starts. Each turn, an Amazon moves to a square, then shoots an arrow from that landing square and claim that square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. As the game progresses, possible moves will become increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).";
-    }
+    public static void startGame() {
+        Scanner in = new Scanner(System.in);
 
+        System.out.println("-----------------------------------");
+        System.out.println("| WELCOME TO GAME OF THE AMAZONS! | ");
+        System.out.println("-----------------------------------");
+        System.out.println();
+        System.out.println("Would you like to review the rules? (y/n)");
+        if (in.next().equalsIgnoreCase("Y")) {
+            System.out.println("Players alternate moves, and white starts. Each turn, an Amazon moves to a square, then shoots an arrow (orthogonally or diagonally) to burn that square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. As the game progresses, possible moves will become increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).");
+        }
+        System.out.println();
+        System.out.println("Let's begin! This is a two player game: o is player 1, and x is player 2.");
+    }
 }
