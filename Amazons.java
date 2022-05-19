@@ -33,15 +33,22 @@ public class Amazons {
                 } else {
                     pt = 1;
                 }
+
+                System.out.println("--------------------");
             }
             
             System.out.println("Would you like to play again? (y/n)");
-            if (in.next().equalsIgnoreCase("N")) {
+            if (in.next().equalsIgnoreCase("Y")) {
+                gameOver = false;
+                board = initialBoard(10);
+            } else {
                 wantPlay = false;
             }
         }
         in.close();
     }
+
+
 
     // formats the board so that it's readable
     public static String printBoard(int[][] board) {
@@ -187,12 +194,12 @@ public class Amazons {
                 }
             }
         } else if (currCol == moveCol) { // vertical
-            for (int r = Math.min(currRow+1, moveRow); r <= Math.max(currRow+1, moveRow); r++) {
+            for (int r = Math.min(currRow + 1, moveRow); r <= Math.max(currRow + 1, moveRow); r++) {
                 if (board[r][currCol] != 0) {
                     return false;
                 }
             }
-        } else if ((currCol - moveCol) == (currRow - moveRow)) { // diagonal
+        } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // diagonal
             for (int a = 0; a < Math.abs(currRow-moveRow); a++) {
                 if (board[Math.min(currRow+1, moveRow) + a][Math.min(currCol+1, moveCol) + a] != 0) {
                     System.out.println(board[Math.min(currRow+1, moveRow) + a][Math.min(currCol+1, moveCol)+a]);
