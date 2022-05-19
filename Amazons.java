@@ -41,11 +41,13 @@ public class Amazons {
                 System.out.println("Not legal.");
                 //ADD STUFF TO ALLOW LEGAL MOVE
             }
-            if (isLegalMove(board, amazonsRow, amazonsCol, arrowRow, arrowCol)) {
+            if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
                 board[arrowRow][arrowCol] = 3;
             } else {
                 System.out.println("Not legal.");
             }
+
+            // check for winners, see if they want to play again
 
             // next player's turn
             pt++;
@@ -143,9 +145,22 @@ public class Amazons {
     }
 
     public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
-        for (int r = currRow; r <= moveRow; r++) {
-            for (int c = currCol; c <= moveCol; c++) {
-                if (board[r][c] != 0) {
+        if (currRow == moveRow) { // horizontal
+            for (int c = Math.min(currCol+1, moveCol); c <= Math.max(currCol+1, moveCol); c++) {
+                if (board[currRow][c] != 0) {
+                    return false;
+                }
+            }
+        } else if (currCol == moveCol) { // vertical
+            for (int r = Math.min(currRow+1, moveRow); r <= Math.max(currRow+1, moveRow); r++) {
+                if (board[r][currCol] != 0) {
+                    return false;
+                }
+            }
+        } else { // diagonal
+            for (int a = 0; a < Math.abs(currRow-moveRow); a++) {
+                if (board[Math.min(currRow+1, moveRow) + a][Math.min(currCol+1, moveCol) + a] != 0) {
+                    System.out.println(board[Math.min(currRow+1, moveRow) + a][Math.min(currCol+1, moveCol)+a]);
                     return false;
                 }
             }
