@@ -15,11 +15,25 @@ public class Amazons {
             System.out.println(rules());
         }
         System.out.println();
-        System.out.println("Let's begin! This is a two player game.");
-        System.out.println(printBoard(board));
+        System.out.println("Let's begin! This is a two player game: o is player 1, and x is player 2.");
 
         // GAMEPLAY 
+        boolean gameOver = false;
+        int pt = 1; // pt = player turn, player 1
 
+        while (!gameOver) {
+            System.out.println(printBoard(board));
+            int amazonsRow = amazonsRow(pt);
+            int amazonsCol = amazonsCol(pt);
+            int moveRow = moveRow(pt);
+            int moveCol = moveCol(pt);
+            int arrowRow = arrowRow(pt);
+            int arrowCol = arrowCol(pt);
+            if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
+                board[amazonsRow][amazonsCol] = 0;
+                board[moveRow][moveCol] = pt;
+            }
+        }
 
         in.close();
     }
@@ -34,8 +48,10 @@ public class Amazons {
                     printBoard += ". ";
                 } else if (board[r][c] == 1) {
                     printBoard += "o ";
-                } else {
+                } else if (board[r][c] == 2) {
                     printBoard += "x ";
+                } else {
+                    printBoard += "  ";
                 }
             }
             printBoard += "\n";
@@ -57,45 +73,58 @@ public class Amazons {
         board[3][0] = 1;
         board[3][9] = 1;
         // white queens
-        board[6][0] = 1;
-        board[6][9] = 1;
-        board[9][3] = 1;
-        board[9][6] = 1;
+        board[6][0] = 2;
+        board[6][9] = 2;
+        board[9][3] = 2;
+        board[9][6] = 2;
 
         return board;
     }
 
-    public static int askRowMove(int player) {
+    public static int amazonsRow(int player) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Player " + player + ", which row is the piece you want to move in?");
+        return in.nextInt();
+    }
+
+    public static int amazonsCol(int player) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Player " + player + ", what column is the piece you want to move in?");
+        return in.nextInt();
+    }
+
+    public static int moveRow(int player) {
         Scanner in = new Scanner(System.in);
         System.out.println("Player " + player + ", which row do you want to move to?");
         return in.nextInt();
     }
 
-    public static int askColumnMove(int player) {
+    public static int moveCol(int player) {
         Scanner in = new Scanner(System.in);
         System.out.println("Player " + player + ", which column do you want to move to?");
         return in.nextInt();
     }
-    public static int askRowArrow(int player) {
+
+    public static int arrowRow(int player) {
         Scanner in = new Scanner(System.in);
         System.out.println("Player " + player + ", to which row do you want to move your arrow?");
         return in.nextInt();
     }
 
-    public static int askColumnArrow(int player) {
+    public static int arrowCol(int player) {
         Scanner in = new Scanner(System.in);
         System.out.println("Player " + player + ", to which column do you want to move your arrow?");
         return in.nextInt();
     }
 
-    public static boolean checkDone() {
+    public static boolean checkWinner(int player) { // checks if player 1 or 2 won
         return true;
     }
 
     public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
         for (int r = currRow; r <= moveRow; r++) {
             for (int c = currCol; c <= moveCol; c++) {
-                if ((board[r][c] == 1) || (board[r][c] == 2)) {
+                if (board[r][c] != 0) {
                     return false;
                 }
             }
