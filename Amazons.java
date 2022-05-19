@@ -16,8 +16,10 @@ public class Amazons {
         }
         System.out.println();
         System.out.println("Let's begin! This is a two player game.");
-
         System.out.println(printBoard(board));
+
+        // GAMEPLAY 
+
 
         in.close();
     }
@@ -27,11 +29,13 @@ public class Amazons {
         String printBoard = "\n  0 1 2 3 4 5 6 7 8 9 \n";
         for (int r = 0; r < board.length; r++) {
             printBoard += r + " ";
-            for (int c = 0; c < board[0].length; c++) {
+            for (int c = 0; c < board[0].length; c++) { // 0s are open, 1s have queens, 2s are blocked
                 if (board[r][c] == 0) {
                     printBoard += ". ";
-                } else {
+                } else if (board[r][c] == 1) {
                     printBoard += "o ";
+                } else {
+                    printBoard += "x ";
                 }
             }
             printBoard += "\n";
@@ -61,11 +65,41 @@ public class Amazons {
         return board;
     }
 
-    public static void play() {
-        // might not need
+    public static int askRowMove(int player) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Player " + player + ", which row do you want to move to?");
+        return in.nextInt();
+    }
+
+    public static int askColumnMove(int player) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Player " + player + ", which column do you want to move to?");
+        return in.nextInt();
+    }
+    public static int askRowArrow(int player) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Player " + player + ", to which row do you want to move your arrow?");
+        return in.nextInt();
+    }
+
+    public static int askColumnArrow(int player) {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Player " + player + ", to which column do you want to move your arrow?");
+        return in.nextInt();
     }
 
     public static boolean checkDone() {
+        return true;
+    }
+
+    public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
+        for (int r = currRow; r <= moveRow; r++) {
+            for (int c = currCol; c <= moveCol; c++) {
+                if ((board[r][c] == 1) || (board[r][c] == 2)) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
