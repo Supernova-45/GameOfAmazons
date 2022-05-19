@@ -54,7 +54,7 @@ public class Amazons {
 
     // formats the board so that it's readable
     public static String printBoard(int[][] board) {
-        String printBoard = "\n ";
+        String printBoard = "\n  ";
         for (int i = 0; i < board.length; i++) {
             printBoard += i + " ";
         }
@@ -225,22 +225,57 @@ public class Amazons {
 
     public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
         if (currRow == moveRow) { // horizontal
-            for (int c = Math.min(currCol+1, moveCol); c <= Math.max(currCol+1, moveCol); c++) {
-                if (board[currRow][c] != 0) {
-                    return false;
+            if (currCol < moveCol) {
+                for (int c = currCol+1; c <= moveCol; c++) {
+                    if (board[currRow][c] != 0) {
+                        return false;
+                    }
+                }
+            } else {
+                for (int c = moveCol; c <= currCol-1; c++) {
+                    if (board[currRow][c] != 0) {
+                        return false;
+                    }
                 }
             }
+            
         } else if (currCol == moveCol) { // vertical
-            for (int r = Math.min(currRow + 1, moveRow); r <= Math.max(currRow + 1, moveRow); r++) {
-                if (board[r][currCol] != 0) {
-                    return false;
+            if (currRow < moveRow) {
+                for (int r = currRow + 1; r <= moveRow; r++) {
+                    if (board[r][currCol] != 0) {
+                        return false;
+                    }
+                }
+            } else {
+                for (int r = moveRow; r <= currRow + 1; r++) {
+                    if (board[r][currCol] != 0) {
+                        return false;
+                    }
                 }
             }
-        } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // diagonal
-            for (int a = 0; a < Math.abs(currRow-moveRow); a++) {
-                if (board[Math.min(currRow+1, moveRow) + a][Math.min(currCol+1, moveCol) + a] != 0) {
-                    System.out.println(board[Math.min(currRow+1, moveRow) + a][Math.min(currCol+1, moveCol)+a]);
-                    return false;
+            
+        } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // 4 cases for diagonal moves
+            for (int a = 0; a < Math.abs(currRow - moveRow); a++) {
+                if (currCol < moveCol) {
+                    if (currRow < moveRow) {
+                        if (board[currRow + a][currCol + a] != 0) {
+                            return false;
+                        }
+                    } else {
+                        if (board[currRow - a][currCol + a] != 0) {
+                            return false;
+                        }
+                    }
+                } else {
+                    if (currRow < moveRow) {
+                        if (board[currRow + a][currCol - a] != 0) {
+                            return false;
+                        }
+                    } else {
+                        if (board[currRow - a][currCol - a] != 0) {
+                            return false;
+                        }
+                    }
                 }
             }
         } else { // not diagonal, horizontal or vertical
