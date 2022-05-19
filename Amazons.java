@@ -18,29 +18,7 @@ public class Amazons {
 
             while (!gameOver) {
                 System.out.println(printBoard(board));
-                int amazonsRow = amazonsRow(pt);
-                int amazonsCol = amazonsCol(pt);
-                int moveRow = moveRow(pt);
-                int moveCol = moveCol(pt);
-                int arrowRow = arrowRow(pt);
-                int arrowCol = arrowCol(pt);
-
-                // checking legality
-                if (board[amazonsRow][amazonsCol] != pt) {
-                    System.out.println("That's not your piece.");
-                }
-                if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
-                    board[amazonsRow][amazonsCol] = 0;
-                    board[moveRow][moveCol] = pt;
-                } else {
-                    System.out.println("Not legal.");
-                    //ADD STUFF TO ALLOW LEGAL MOVE
-                }
-                if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
-                    board[arrowRow][arrowCol] = 3;
-                } else {
-                    System.out.println("Not legal.");
-                }
+                board = move(board, pt); // the player's turn
 
                 // check for winners, see if they want to play again
                 if (checkWinner(board, pt) == true) {
@@ -144,8 +122,34 @@ public class Amazons {
         return in.nextInt();
     }
 
-    public static void move(int player) {
+    public static int[][] move(int[][] board, int pt) {
+        int[][] newBoard = board;
+
+        int amazonsRow = amazonsRow(pt);
+        int amazonsCol = amazonsCol(pt);
+        int moveRow = moveRow(pt);
+        int moveCol = moveCol(pt);
+        int arrowRow = arrowRow(pt);
+        int arrowCol = arrowCol(pt);
+
+        // checking legality
+        if (board[amazonsRow][amazonsCol] != pt) {
+            System.out.println("That's not your piece.");
+        }
+        if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
+            board[amazonsRow][amazonsCol] = 0;
+            board[moveRow][moveCol] = pt;
+        } else {
+            System.out.println("Not legal.");
+            //ADD STUFF TO ALLOW LEGAL MOVE
+        }
+        if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
+            board[arrowRow][arrowCol] = 3;
+        } else {
+            System.out.println("Not legal.");
+        }
         
+        return board;
     }
 
     public static boolean checkWinner(int[][] board, int player) { // checks if player won by seeing if other player has a move
