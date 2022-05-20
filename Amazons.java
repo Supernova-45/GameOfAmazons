@@ -1,3 +1,9 @@
+/**
+ * @author Alexandra Kim
+ * @version 5-20-2022
+ * Text-based implementation of Game of the Amazons
+ */
+
 import java.util.Scanner;
 
 public class Amazons {
@@ -23,11 +29,37 @@ public class Amazons {
             while (!gameOver) {
                 System.out.println(printBoard(board));
 
+                //MOVE
                 moveCounter++;
-                board = move(board, pt, moveCounter, gameRecord); // the player's turn
 
-                System.out.println(gameRecord);
-                
+                int amazonsRow = amazonsRow(pt); int amazonsCol = amazonsCol(pt);
+                // checking legality
+                if (board[amazonsRow][amazonsCol] != pt) {
+                    System.out.println("That's not your piece.");
+                    amazonsRow = amazonsRow(pt); amazonsCol = amazonsCol(pt);
+                }
+        
+                int moveRow = moveRow(pt); int moveCol = moveCol(pt);
+        
+                if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
+                    board[amazonsRow][amazonsCol] = 0;
+                    board[moveRow][moveCol] = pt;
+                } else {
+                    System.out.println("Not legal.");
+                    moveRow = moveRow(pt); moveCol = moveCol(pt);
+                }
+        
+                int arrowRow = arrowRow(pt); int arrowCol = arrowCol(pt);
+        
+                if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
+                    board[arrowRow][arrowCol] = 3;
+                } else {
+                    System.out.println("Not legal.");
+                    arrowRow = arrowRow(pt); arrowCol = arrowCol(pt);
+                }
+        
+                gameRecord += formatGame(moveCounter, gameRecord, amazonsRow, amazonsCol, moveRow, moveCol, arrowRow, arrowCol); // saving the move
+                 
                 // next player's turn
                 pt++;
                 if (pt % 2 == 0) {
@@ -184,45 +216,6 @@ public class Amazons {
         return in.nextInt();
     }
 
-    public static int[][] move(int[][] board, int pt, int moveNum, String gameRecord) { // can only make an illegal move once
-
-        int amazonsRow = amazonsRow(pt);
-        int amazonsCol = amazonsCol(pt);
-        // checking legality
-        if (board[amazonsRow][amazonsCol] != pt) {
-            System.out.println("That's not your piece.");
-            amazonsRow = amazonsRow(pt);
-            amazonsCol = amazonsCol(pt);
-        }
-
-        int moveRow = moveRow(pt);
-        int moveCol = moveCol(pt);
-
-        if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
-            board[amazonsRow][amazonsCol] = 0;
-            board[moveRow][moveCol] = pt;
-        } else {
-            System.out.println("Not legal.");
-            moveRow = moveRow(pt);
-            moveCol = moveCol(pt);
-        }
-
-        int arrowRow = arrowRow(pt);
-        int arrowCol = arrowCol(pt);
-
-        if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
-            board[arrowRow][arrowCol] = 3;
-        } else {
-            System.out.println("Not legal.");
-            arrowRow = arrowRow(pt);
-            arrowCol = arrowCol(pt);
-        }
-
-        formatGame(moveNum, gameRecord, amazonsRow, amazonsCol, moveRow, moveCol, arrowRow, arrowCol); // saving the move
-
-        return board;
-    }
-
     public static boolean checkWinner(int[][] board, int player) { // checks if player won by seeing if other player has a move
         // next player's turn
         player++;
@@ -329,10 +322,10 @@ public class Amazons {
     }
 
     // Records the game for future reference
-    public static void formatGame(int moveNum, String gameRecord, int amazonsRow, int amazonsCol, int moveRow, int moveCol, int arrowRow, int arrowCol) {
-        gameRecord += ("\n" + moveNum + ". " +
+    public static String formatGame(int moveNum, String gameRecord, int amazonsRow, int amazonsCol, int moveRow, int moveCol, int arrowRow, int arrowCol) {
+        return "\n" + moveNum + ". " +
                 Integer.toString(amazonsRow) + Integer.toString(amazonsCol) + "-" + 
                 Integer.toString(moveRow) + Integer.toString(moveCol) + " (" + 
-                Integer.toString(arrowRow) + Integer.toString(arrowCol) + ")");
+                Integer.toString(arrowRow) + Integer.toString(arrowCol) + ")";
     }
 }

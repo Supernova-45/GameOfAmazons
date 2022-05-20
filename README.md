@@ -1,4 +1,4 @@
-# GameOfAmazons
+# Game Of The Amazons
 
 This is a text-based simulation of two-player Game of the Amazons. (AI to be developed later)
 
