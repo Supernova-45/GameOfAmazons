@@ -43,7 +43,9 @@ public class Amazons {
             if (in.next().equalsIgnoreCase("Y")) {
                 gameOver = false;
                 board = initialBoard(10);
+                System.out.println("\n Starting a new game... \n");
             } else {
+                System.out.println("\n Thanks for playing!");
                 wantPlay = false;
             }
         }
@@ -166,7 +168,7 @@ public class Amazons {
         return in.nextInt();
     }
 
-    public static int[][] move(int[][] board, int pt) { // can only make an unlegal move once
+    public static int[][] move(int[][] board, int pt) { // can only make an illegal move once
     
         int amazonsRow = amazonsRow(pt);
         int amazonsCol = amazonsCol(pt);

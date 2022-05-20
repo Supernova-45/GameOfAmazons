@@ -1,0 +1,5 @@
+Notation: Move number. AmazonrowAmazoncolMoverowMovecol(ArrowrowArrowcol)
+
+Game 1: White wins
+
+1. 0323(21) 2. 4333(00) 3. 0102(22) 4. 3020(11) 5. 2332(23) 6. 3424(13) 7. 3231(30) 8. 3332(42)
