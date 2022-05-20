@@ -22,4 +22,4 @@ Determining the winner of Game of the Amazons is NP-hard.
 
 ## APCS Class
 
-Written for APCS class, and I learned more combinatorial game theory as a bonus. 
+Written for APCS class. In the process, I learned about combinatorial game theory,  algorithms (to build the AI), Java GUIs, and Java applets.
