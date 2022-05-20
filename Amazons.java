@@ -13,6 +13,8 @@ public class Amazons {
         // GAMEPLAY 
         boolean gameOver = false;
         boolean wantPlay = true;
+        int moveCounter = 0;
+        String gameRecord = "";
 
         while (wantPlay) {
 
@@ -20,8 +22,12 @@ public class Amazons {
 
             while (!gameOver) {
                 System.out.println(printBoard(board));
-                board = move(board, pt); // the player's turn
 
+                moveCounter++;
+                board = move(board, pt, moveCounter, gameRecord); // the player's turn
+
+                System.out.println(gameRecord);
+                
                 // next player's turn
                 pt++;
                 if (pt % 2 == 0) {
@@ -35,10 +41,12 @@ public class Amazons {
                 // check for winners, see if they want to play again
                 if (checkWinner(board, pt) == true) {
                     System.out.println("Congratulations player " + pt + ", you've triumphed!");
+                    System.out.println("Game record:");
+                    System.out.println(gameRecord);
                     gameOver = true;
                 }
             }
-            
+
             System.out.println("Would you like to play again? (y/n)");
             if (in.next().equalsIgnoreCase("Y")) {
                 gameOver = false;
@@ -51,8 +59,6 @@ public class Amazons {
         }
         in.close();
     }
-
-
 
     // formats the board so that it's readable
     public static String printBoard(int[][] board) {
@@ -100,14 +106,14 @@ public class Amazons {
             board[9][3] = 2;
             board[9][6] = 2;
         } else if (size == 8) {
-             // black queens
-             board[0][3] = 1;
-             board[1][7] = 1;
-             board[2][0] = 1;
-             // white queens
-             board[5][7] = 2;
-             board[6][0] = 2;
-             board[7][4] = 2;
+            // black queens
+            board[0][3] = 1;
+            board[1][7] = 1;
+            board[2][0] = 1;
+            // white queens
+            board[5][7] = 2;
+            board[6][0] = 2;
+            board[7][4] = 2;
         } else if (size == 6) {
             // black queens
             board[0][3] = 1;
@@ -178,8 +184,8 @@ public class Amazons {
         return in.nextInt();
     }
 
-    public static int[][] move(int[][] board, int pt) { // can only make an illegal move once
-    
+    public static int[][] move(int[][] board, int pt, int moveNum, String gameRecord) { // can only make an illegal move once
+
         int amazonsRow = amazonsRow(pt);
         int amazonsCol = amazonsCol(pt);
         // checking legality
@@ -211,7 +217,9 @@ public class Amazons {
             arrowRow = arrowRow(pt);
             arrowCol = arrowCol(pt);
         }
-        
+
+        formatGame(moveNum, gameRecord, amazonsRow, amazonsCol, moveRow, moveCol, arrowRow, arrowCol); // saving the move
+
         return board;
     }
 
@@ -245,13 +253,13 @@ public class Amazons {
     public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
         if (currRow == moveRow) { // horizontal
             if (currCol < moveCol) {
-                for (int c = currCol+1; c <= moveCol; c++) {
+                for (int c = currCol + 1; c <= moveCol; c++) {
                     if (board[currRow][c] != 0) {
                         return false;
                     }
                 }
             } else {
-                for (int c = moveCol; c <= currCol-1; c++) {
+                for (int c = moveCol; c <= currCol - 1; c++) {
                     if (board[currRow][c] != 0) {
                         return false;
                     }
@@ -271,7 +279,7 @@ public class Amazons {
                     }
                 }
             }
-            
+
         } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // 4 cases for diagonal moves
             for (int a = 1; a < Math.abs(currRow - moveRow); a++) {
                 if (currCol < moveCol) {
@@ -311,15 +319,20 @@ public class Amazons {
         System.out.println();
         System.out.println("Would you like to review the rules? (y/n)");
         if (in.next().equalsIgnoreCase("Y")) {
-            System.out.println("Players alternate moves, and white starts. Each turn, an Amazon moves to a square, then shoots an arrow (orthogonally or diagonally) to burn that square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. As the game progresses, possible moves will become increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).");
+            System.out.println(
+                    "Players alternate moves, and white starts. Each turn, an Amazon moves to a square, then shoots an arrow (orthogonally or diagonally) to burn that square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. As the game progresses, possible moves will become increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).");
         }
         System.out.println();
-        System.out.println("This is a two player game: o is player 1, and x is player 2. Do you want to play on a 10x10, 8x8, 6x6, or 5x5? (type 10, 8, 6, or 5)");
+        System.out.println(
+                "This is a two player game: o is player 1, and x is player 2. Do you want to play on a 10x10, 8x8, 6x6, or 5x5? (type 10, 8, 6, or 5)");
         return in.nextInt();
     }
 
     // Records the game for future reference
-    public static formatGame(String game) {
-
+    public static void formatGame(int moveNum, String gameRecord, int amazonsRow, int amazonsCol, int moveRow, int moveCol, int arrowRow, int arrowCol) {
+        gameRecord += ("\n" + moveNum + ". " +
+                Integer.toString(amazonsRow) + Integer.toString(amazonsCol) + "-" + 
+                Integer.toString(moveRow) + Integer.toString(moveCol) + " (" + 
+                Integer.toString(arrowRow) + Integer.toString(arrowCol) + ")");
     }
 }
