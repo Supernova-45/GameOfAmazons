@@ -8,12 +8,17 @@ public class ButtonGrid {
 	JButton[][] grid; //names the grid of buttons
 
     public ButtonGrid(int[][] board) { //constructor
+        JFrame frame = new JFrame("Game of the Amazons");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 300);
+
 		frame.setLayout(new GridLayout(board.length,board[0].length)); //set layout
 		grid=new JButton[board.length][board[0].length]; //allocate the size of grid
 		for(int row=0; row<board.length; row++){
 			for(int col=0; col<board[0].length; col++){
 				grid[row][col]=new JButton(Integer.toString(board[row][col])); //creates new button	  
-				frame.add(grid[row][col]); //adds button to grid
+                frame.add(grid[row][col]); //adds button to grid
+                grid[row][col].setBackground(Color.blue);
 			}
 		}
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
