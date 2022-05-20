@@ -22,12 +22,6 @@ public class Amazons {
                 System.out.println(printBoard(board));
                 board = move(board, pt); // the player's turn
 
-                // check for winners, see if they want to play again
-                if (checkWinner(board, pt) == true) {
-                    System.out.println("Congratulations player " + pt + ", you've triumphed!");
-                    gameOver = true;
-                }
-
                 // next player's turn
                 pt++;
                 if (pt % 2 == 0) {
@@ -37,6 +31,12 @@ public class Amazons {
                 }
 
                 System.out.println("--------------------");
+
+                // check for winners, see if they want to play again
+                if (checkWinner(board, pt) == true) {
+                    System.out.println("Congratulations player " + pt + ", you've triumphed!");
+                    gameOver = true;
+                }
             }
             
             System.out.println("Would you like to play again? (y/n)");
@@ -127,7 +127,17 @@ public class Amazons {
             board[4][1] = 2;
             board[4][3] = 2;
         } else {
-            System.out.println("Not a valid size.");
+            System.out.println("Not a valid size, defaulting to 10x10");
+            // black queens
+            board[0][3] = 1;
+            board[0][6] = 1;
+            board[3][0] = 1;
+            board[3][9] = 1;
+            // white queens
+            board[6][0] = 2;
+            board[6][9] = 2;
+            board[9][3] = 2;
+            board[9][6] = 2;
         }
         return board;
     }
@@ -247,7 +257,6 @@ public class Amazons {
                     }
                 }
             }
-            
         } else if (currCol == moveCol) { // vertical
             if (currRow < moveRow) {
                 for (int r = currRow + 1; r <= moveRow; r++) {
@@ -256,7 +265,7 @@ public class Amazons {
                     }
                 }
             } else {
-                for (int r = moveRow; r <= currRow + 1; r++) {
+                for (int r = moveRow; r <= currRow - 1; r++) {
                     if (board[r][currCol] != 0) {
                         return false;
                     }
@@ -264,7 +273,7 @@ public class Amazons {
             }
             
         } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // 4 cases for diagonal moves
-            for (int a = 0; a < Math.abs(currRow - moveRow); a++) {
+            for (int a = 1; a < Math.abs(currRow - moveRow); a++) {
                 if (currCol < moveCol) {
                     if (currRow < moveRow) {
                         if (board[currRow + a][currCol + a] != 0) {
@@ -307,5 +316,10 @@ public class Amazons {
         System.out.println();
         System.out.println("This is a two player game: o is player 1, and x is player 2. Do you want to play on a 10x10, 8x8, 6x6, or 5x5? (type 10, 8, 6, or 5)");
         return in.nextInt();
+    }
+
+    // Records the game for future reference
+    public static formatGame(String game) {
+
     }
 }
