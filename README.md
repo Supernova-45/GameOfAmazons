@@ -12,14 +12,10 @@ As the game progresses, possible moves will become increasingly limited. The las
 
 ## Strategy
 
-Much of the game is based on "territorial average," a concept used in my program to predict the winner of the game without .
+Much of the game is based on "territorial average," a concept used in my program to predict the winner of the game without having to actually play the whole thing out.
 
 ## AI algorithm
 
-## Other information
+I tried to implement the minimax algorithm.
 
-Determining the winner of Game of the Amazons is NP-hard.
-
-## APCS Class
-
-Written for APCS class. In the process, I learned about combinatorial game theory,  algorithms (to build the AI), Java GUIs, and Java applets.
+*Written for APCS class.* 

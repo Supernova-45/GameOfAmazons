@@ -4,6 +4,7 @@ import java.awt.event.*;
 
 public class ButtonGrid {
 
+    // need way to use keyboard to exit
 	JFrame frame=new JFrame(); //creates frame
 	JButton[][] grid; //names the grid of buttons
 

@@ -82,7 +82,7 @@ public class Amazons {
             System.out.println("Would you like to play again? (y/n)");
             if (in.next().equalsIgnoreCase("Y")) {
                 gameOver = false;
-                board = initialBoard(10);
+                board = initialBoard(size);
                 System.out.println("\n Starting a new game... \n");
             } else {
                 System.out.println("\n Thanks for playing!");
@@ -182,7 +182,7 @@ public class Amazons {
 
     public static int amazonsRow(int player) {
         Scanner in = new Scanner(System.in);
-        System.out.println("Player " + player + ", which row is the piece you want to move in?");
+        System.out.println("Player " + player + ", what row is the piece you want to move in?");
         return in.nextInt();
     }
 
@@ -194,13 +194,13 @@ public class Amazons {
 
     public static int moveRow(int player) {
         Scanner in = new Scanner(System.in);
-        System.out.println("Player " + player + ", which row do you want to move to?");
+        System.out.println("Player " + player + ", which row do you want to move the piece to?");
         return in.nextInt();
     }
 
     public static int moveCol(int player) {
         Scanner in = new Scanner(System.in);
-        System.out.println("Player " + player + ", which column do you want to move to?");
+        System.out.println("Player " + player + ", which column do you want to move the piece to?");
         return in.nextInt();
     }
 
@@ -313,7 +313,7 @@ public class Amazons {
         System.out.println("Would you like to review the rules? (y/n)");
         if (in.next().equalsIgnoreCase("Y")) {
             System.out.println(
-                    "Players alternate moves, and white starts. Each turn, an Amazon moves to a square, then shoots an arrow (orthogonally or diagonally) to burn that square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. As the game progresses, possible moves will become increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).");
+                    "Players alternate moves. Each turn, an Amazon moves to a square, then shoots an arrow (orthogonally or diagonally) to burn another square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. As the game progresses, the set of possible moves becomes increasingly limited. The last player to be able to move wins (the game ends when one of the players cannot make a move).");
         }
         System.out.println();
         System.out.println(
@@ -325,7 +325,7 @@ public class Amazons {
     public static String formatGame(int moveNum, String gameRecord, int amazonsRow, int amazonsCol, int moveRow, int moveCol, int arrowRow, int arrowCol) {
         return "\n" + moveNum + ". " +
                 Integer.toString(amazonsRow) + Integer.toString(amazonsCol) + "-" + 
-                Integer.toString(moveRow) + Integer.toString(moveCol) + " (" + 
+                Integer.toString(moveRow) + Integer.toString(moveCol) + "(" + 
                 Integer.toString(arrowRow) + Integer.toString(arrowCol) + ")";
     }
 }
