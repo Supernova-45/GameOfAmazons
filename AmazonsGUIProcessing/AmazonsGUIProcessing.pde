@@ -36,6 +36,95 @@ void draw() {
   
   //code in arrow drawing
 
+  while (wantPlay) {
+    int pt = 1; // pt = player turn, player 1
+
+    while (!gameOver) {
+        //filling in the board
+        load(board);
+
+        //MOVE
+        moveCounter++;
+
+        int amazonsRow = parseInt(mousePressed().substring(2)); int amazonsCol = parseInt(mousePressed().substring(0,1));
+        // checking legality
+        if (board[amazonsRow][amazonsCol] != pt) {
+            System.out.println("That's not your piece.");
+            amazonsRow = amazonsRow(pt); amazonsCol = amazonsCol(pt);
+        }
+
+
+        int moveRow = parseInt(mousePressed().substring(2)); int moveCol = parseInt(mousePressed().substring(0,1));
+
+        if (isLegalMove(board, amazonsRow, amazonsCol, moveRow, moveCol)) {
+            board[amazonsRow][amazonsCol] = 0;
+            board[moveRow][moveCol] = pt;
+        } else {
+            System.out.println("Not legal.");
+            moveRow = moveRow(pt); moveCol = moveCol(pt);
+        }
+        load(board);
+
+
+        int arrowRow = parseInt(mousePressed().substring(2)); int arrowCol = parseInt(mousePressed().substring(0,1));
+
+        if (isLegalMove(board, moveRow, moveCol, arrowRow, arrowCol)) {
+            board[arrowRow][arrowCol] = 3;
+        } else {
+            System.out.println("Not legal.");
+            arrowRow = arrowRow(pt); arrowCol = arrowCol(pt);
+        }
+        load(board);
+
+        //gameRecord += formatGame(moveCounter, gameRecord, amazonsRow, amazonsCol, moveRow, moveCol, arrowRow, arrowCol); // saving the move
+         
+        // next player's turn
+        pt++;
+        if (pt % 2 == 0) {
+            pt = 2;
+        } else {
+            pt = 1;
+        }
+
+        // check for winners, see if they want to play again
+        if (checkWinner(board, pt) == true) {
+            System.out.println("Congratulations player " + pt + ", you've triumphed!");
+            System.out.println("Game record:");
+            System.out.println(gameRecord);
+            gameOver = true;
+        }
+    }
+
+    System.out.println("Would you like to play again? (y/n)");
+    if (in.next().equalsIgnoreCase("Y")) {
+        gameOver = false;
+        board = initialBoard(size);
+        System.out.println("\n Starting a new game... \n");
+    } else {
+        System.out.println("\n Thanks for playing!");
+        wantPlay = false;
+    }
+}
+}
+
+String mousePressed() {
+  int x = mouseX / s;
+  int y = mouseY / s;
+  if ((x < s*w) && (y < w*s)) {
+    return mouseX + " " + mouseY;
+  }
+}
+
+void keyPressed() {
+  
+}
+
+void start() {
+  
+}
+
+
+void load(int[][] board) {
   for (int i = 0; i < h; i++) {
     for (int j = 0; j < w; j++) {
       fill(255);
@@ -55,48 +144,94 @@ void draw() {
   }
 }
 
-void mousePressed() {
-  int x = mouseX / s;
-  int y = mouseY / s;
-  print(mouseX);
-  println(mouseY);
-  if ((x < s*w) && (y < w*s)) {
-    board[y][x] = 1;
-  } else { }
-  printBoard(board);
-  //draw();
-}
 
-void keyPressed() {
-  
-}
-void start() {
-  
-}
-String printBoard(int[][] board) {
-        String printBoard = "\n  ";
-        for (int i = 0; i < board.length; i++) {
-            printBoard += i + " ";
-        }
-        printBoard += "\n";
+boolean checkWinner(int[][] board, int player) { // checks if player won by seeing if other player has a move
+    // next player's turn
+    player++;
+    if (player % 2 == 0) {
+        player = 2;
+    } else {
+        player = 1;
+    }
 
-        for (int r = 0; r < board.length; r++) {
-            printBoard += r + " ";
-            for (int c = 0; c < board[0].length; c++) { // 0s are open, 1s have queens, 2s are blocked
-                if (board[r][c] == 0) {
-                    printBoard += ". ";
-                } else if (board[r][c] == 1) {
-                    printBoard += "o ";
-                } else if (board[r][c] == 2) {
-                    printBoard += "x ";
-                } else {
-                    printBoard += "  ";
+    for (int r = 0; r < board.length; r++) {
+        for (int c = 0; c < board[0].length; c++) {
+            if (board[r][c] == player) { // checking for location of the amazons
+                for (int i = 0; i < board.length; i++) {
+                    for (int j = 0; j < board[0].length; j++) {
+                        if (board[i][j] == 0) {
+                            if (isLegalMove(board, r, c, i, j)) {
+                                return false;
+                            }
+                        }
+                    }
                 }
             }
-            printBoard += "\n";
         }
-        return printBoard;
     }
+    return true;
+}
+
+boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
+    if (currRow == moveRow) { // horizontal
+        if (currCol < moveCol) {
+            for (int c = currCol + 1; c <= moveCol; c++) {
+                if (board[currRow][c] != 0) {
+                    return false;
+                }
+            }
+        } else {
+            for (int c = moveCol; c <= currCol - 1; c++) {
+                if (board[currRow][c] != 0) {
+                    return false;
+                }
+            }
+        }
+    } else if (currCol == moveCol) { // vertical
+        if (currRow < moveRow) {
+            for (int r = currRow + 1; r <= moveRow; r++) {
+                if (board[r][currCol] != 0) {
+                    return false;
+                }
+            }
+        } else {
+            for (int r = moveRow; r <= currRow - 1; r++) {
+                if (board[r][currCol] != 0) {
+                    return false;
+                }
+            }
+        }
+
+    } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // 4 cases for diagonal moves
+        for (int a = 1; a < Math.abs(currRow - moveRow); a++) {
+            if (currCol < moveCol) {
+                if (currRow < moveRow) {
+                    if (board[currRow + a][currCol + a] != 0) {
+                        return false;
+                    }
+                } else {
+                    if (board[currRow - a][currCol + a] != 0) {
+                        return false;
+                    }
+                }
+            } else {
+                if (currRow < moveRow) {
+                    if (board[currRow + a][currCol - a] != 0) {
+                        return false;
+                    }
+                } else {
+                    if (board[currRow - a][currCol - a] != 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+    } else { // not diagonal, horizontal or vertical
+        return false;
+    }
+    return true;
+}
+
     
 int[][] initialBoard(int size) {
         int[][] board = new int[size][size];
@@ -157,91 +292,4 @@ int[][] initialBoard(int size) {
             board[9][6] = 2;
         }
         return board;
-    }
-
-public static boolean checkWinner(int[][] board, int player) { // checks if player won by seeing if other player has a move
-        // next player's turn
-        player++;
-        if (player % 2 == 0) {
-            player = 2;
-        } else {
-            player = 1;
-        }
-
-        for (int r = 0; r < board.length; r++) {
-            for (int c = 0; c < board[0].length; c++) {
-                if (board[r][c] == player) { // checking for location of the amazons
-                    for (int i = 0; i < board.length; i++) {
-                        for (int j = 0; j < board[0].length; j++) {
-                            if (board[i][j] == 0) {
-                                if (isLegalMove(board, r, c, i, j)) {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
-        if (currRow == moveRow) { // horizontal
-            if (currCol < moveCol) {
-                for (int c = currCol + 1; c <= moveCol; c++) {
-                    if (board[currRow][c] != 0) {
-                        return false;
-                    }
-                }
-            } else {
-                for (int c = moveCol; c <= currCol - 1; c++) {
-                    if (board[currRow][c] != 0) {
-                        return false;
-                    }
-                }
-            }
-        } else if (currCol == moveCol) { // vertical
-            if (currRow < moveRow) {
-                for (int r = currRow + 1; r <= moveRow; r++) {
-                    if (board[r][currCol] != 0) {
-                        return false;
-                    }
-                }
-            } else {
-                for (int r = moveRow; r <= currRow - 1; r++) {
-                    if (board[r][currCol] != 0) {
-                        return false;
-                    }
-                }
-            }
-
-        } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // 4 cases for diagonal moves
-            for (int a = 1; a < Math.abs(currRow - moveRow); a++) {
-                if (currCol < moveCol) {
-                    if (currRow < moveRow) {
-                        if (board[currRow + a][currCol + a] != 0) {
-                            return false;
-                        }
-                    } else {
-                        if (board[currRow - a][currCol + a] != 0) {
-                            return false;
-                        }
-                    }
-                } else {
-                    if (currRow < moveRow) {
-                        if (board[currRow + a][currCol - a] != 0) {
-                            return false;
-                        }
-                    } else {
-                        if (board[currRow - a][currCol - a] != 0) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        } else { // not diagonal, horizontal or vertical
-            return false;
-        }
-        return true;
     }
