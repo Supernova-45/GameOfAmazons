@@ -12,7 +12,7 @@ As the game progresses, possible moves will become increasingly limited. The las
 
 ## Features
 
-The program will, at the end, print a record of the moves played. It will also offer to play again. You can use the notation *AmazonrowAmazoncol-MoverowMovecol(ArrowrowArrowcol)* or simply enter the six parameters that make a move. 
+The program will, at the end, print a record of the moves played. It will also offer to play again. I was going to add a feature to simplify the moving, so that you can use the notation *AmazonrowAmazoncol-MoverowMovecol(ArrowrowArrowcol)*, but didn't get to it (See samplegames.txt.)
 
 ## Strategy
 

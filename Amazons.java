@@ -12,15 +12,16 @@ public class Amazons {
         Scanner in = new Scanner(System.in);
 
         int size = startGame();
+
         int[][] board = initialBoard(size);
-
-        System.out.println("Let's begin!");
-
-        // GAMEPLAY 
         boolean gameOver = false;
         boolean wantPlay = true;
         int moveCounter = 0;
         String gameRecord = "";
+
+        System.out.println("Let's begin!");
+
+        // GAMEPLAY 
 
         while (wantPlay) {
 
