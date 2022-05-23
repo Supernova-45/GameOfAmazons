@@ -4,6 +4,11 @@ String begin = "Let's begin!";
 String clear = "";
 int t; // time
 
+boolean gameOver = false;
+boolean wantPlay = true;
+int moveCounter = 0;
+String gameRecord = "";
+
 void setup() {
   surface.setTitle("Game of the Amazons");
   size(1000, 500); ellipseMode(CORNER);
@@ -15,9 +20,8 @@ void setup() {
   
 }
 
-
-
 void draw() {
+  /**
   while (true) { 
     if (millis() - t > 3000) {
       begin = clear;
@@ -28,6 +32,7 @@ void draw() {
     textSize(50);
     text(begin, 600, 300);
   }
+  */
   
   //code in arrow drawing
 
@@ -53,9 +58,13 @@ void draw() {
 void mousePressed() {
   int x = mouseX / s;
   int y = mouseY / s;
-  board[y][x] = 1;
+  print(mouseX);
+  println(mouseY);
+  if ((x < s*w) && (y < w*s)) {
+    board[y][x] = 1;
+  } else { }
   printBoard(board);
-  draw();
+  //draw();
 }
 
 void keyPressed() {
@@ -148,4 +157,91 @@ int[][] initialBoard(int size) {
             board[9][6] = 2;
         }
         return board;
+    }
+
+public static boolean checkWinner(int[][] board, int player) { // checks if player won by seeing if other player has a move
+        // next player's turn
+        player++;
+        if (player % 2 == 0) {
+            player = 2;
+        } else {
+            player = 1;
+        }
+
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                if (board[r][c] == player) { // checking for location of the amazons
+                    for (int i = 0; i < board.length; i++) {
+                        for (int j = 0; j < board[0].length; j++) {
+                            if (board[i][j] == 0) {
+                                if (isLegalMove(board, r, c, i, j)) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
+        if (currRow == moveRow) { // horizontal
+            if (currCol < moveCol) {
+                for (int c = currCol + 1; c <= moveCol; c++) {
+                    if (board[currRow][c] != 0) {
+                        return false;
+                    }
+                }
+            } else {
+                for (int c = moveCol; c <= currCol - 1; c++) {
+                    if (board[currRow][c] != 0) {
+                        return false;
+                    }
+                }
+            }
+        } else if (currCol == moveCol) { // vertical
+            if (currRow < moveRow) {
+                for (int r = currRow + 1; r <= moveRow; r++) {
+                    if (board[r][currCol] != 0) {
+                        return false;
+                    }
+                }
+            } else {
+                for (int r = moveRow; r <= currRow - 1; r++) {
+                    if (board[r][currCol] != 0) {
+                        return false;
+                    }
+                }
+            }
+
+        } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // 4 cases for diagonal moves
+            for (int a = 1; a < Math.abs(currRow - moveRow); a++) {
+                if (currCol < moveCol) {
+                    if (currRow < moveRow) {
+                        if (board[currRow + a][currCol + a] != 0) {
+                            return false;
+                        }
+                    } else {
+                        if (board[currRow - a][currCol + a] != 0) {
+                            return false;
+                        }
+                    }
+                } else {
+                    if (currRow < moveRow) {
+                        if (board[currRow + a][currCol - a] != 0) {
+                            return false;
+                        }
+                    } else {
+                        if (board[currRow - a][currCol - a] != 0) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        } else { // not diagonal, horizontal or vertical
+            return false;
+        }
+        return true;
     }
