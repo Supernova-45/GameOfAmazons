@@ -53,6 +53,9 @@ void draw() {
 void mousePressed() {
   int x = mouseX / s;
   int y = mouseY / s;
+  board[y][x] = 1;
+  printBoard(board);
+  draw();
 }
 
 void keyPressed() {
@@ -146,4 +149,3 @@ int[][] initialBoard(int size) {
         }
         return board;
     }
-
