@@ -3,6 +3,8 @@ int[][]board = new int[h][w];
 String begin = "Let's begin!";
 String clear = "";
 int t; // time
+int pt; // player turn
+int clicks = 0;
 
 boolean gameOver = false;
 boolean wantPlay = true;
@@ -14,10 +16,9 @@ void setup() {
   size(1000, 500); ellipseMode(CORNER);
   background(173,216,230);
   frameRate(120);
-  t = millis();
-  print(t);
+  //t = millis();
+  //print(t);
   board = initialBoard(5);
-  
 }
 
 void draw() {
@@ -33,16 +34,48 @@ void draw() {
     text(begin, 600, 300);
   }
   */
+  load(board);
+
+  while (wantPlay) { 
+    load(board);
+    //pt = 1; // player turn
+    
+    //while (!gameOver) {
+      //load(board);
+      /**
+      // next player's turn
+      pt++;
+      if (pt % 2 == 0) {
+          pt = 2;
+      } else {
+          pt = 1;
+      }
+
+      // check for winners, see if they want to play again
+      if (checkWinner(board, pt) == true) {
+          System.out.println("Congratulations player " + pt + ", you've triumphed!");
+          System.out.println("Game record:");
+          System.out.println(gameRecord);
+          gameOver = true;
+      } 
+      */
+   // }
+  }
+  
+}
+  
+  /**
   
   //code in arrow drawing
 
   while (wantPlay) {
     int pt = 1; // pt = player turn, player 1
+    int piece = 1; // black red or grey
 
     while (!gameOver) {
         //filling in the board
-        load(board);
 
+        
         //MOVE
         moveCounter++;
 
@@ -50,7 +83,7 @@ void draw() {
         // checking legality
         if (board[amazonsRow][amazonsCol] != pt) {
             System.out.println("That's not your piece.");
-            amazonsRow = amazonsRow(pt); amazonsCol = amazonsCol(pt);
+            amazonsRow = parseInt(mousePressed().substring(2)); amazonsCol = parseInt(mousePressed().substring(0,1));
         }
 
 
@@ -61,7 +94,7 @@ void draw() {
             board[moveRow][moveCol] = pt;
         } else {
             System.out.println("Not legal.");
-            moveRow = moveRow(pt); moveCol = moveCol(pt);
+            moveRow = parseInt(mousePressed().substring(2)); moveCol = parseInt(mousePressed().substring(0,1));
         }
         load(board);
 
@@ -72,7 +105,7 @@ void draw() {
             board[arrowRow][arrowCol] = 3;
         } else {
             System.out.println("Not legal.");
-            arrowRow = arrowRow(pt); arrowCol = arrowCol(pt);
+            arrowRow = parseInt(mousePressed().substring(2)); arrowCol = parseInt(mousePressed().substring(0,1));
         }
         load(board);
 
@@ -85,7 +118,7 @@ void draw() {
         } else {
             pt = 1;
         }
-
+   
         // check for winners, see if they want to play again
         if (checkWinner(board, pt) == true) {
             System.out.println("Congratulations player " + pt + ", you've triumphed!");
@@ -94,7 +127,8 @@ void draw() {
             gameOver = true;
         }
     }
-
+    
+    
     System.out.println("Would you like to play again? (y/n)");
     if (in.next().equalsIgnoreCase("Y")) {
         gameOver = false;
@@ -104,14 +138,31 @@ void draw() {
         System.out.println("\n Thanks for playing!");
         wantPlay = false;
     }
-}
-}
+    
+}  
+*/
 
-String mousePressed() {
+void mousePressed() {
+  clicks++;
   int x = mouseX / s;
   int y = mouseY / s;
   if ((x < s*w) && (y < w*s)) {
-    return mouseX + " " + mouseY;
+    if (clicks % 3 == 0) {
+      board[y][x] = 3;
+    } else {
+    board[y][x] = pt;
+    }
+  }
+}
+
+void mouseDragged() {
+  int prevX = pmouseX / s;
+  int prevY = pmouseY / s;
+  int x = mouseX / s;
+  int y = mouseY / s;
+  if ((x < s*w) && (y < w*s)) {
+    board[prevX][prevY] = 0;
+    board[x][y] = 1;
   }
 }
 
@@ -125,8 +176,8 @@ void start() {
 
 
 void load(int[][] board) {
-  for (int i = 0; i < h; i++) {
-    for (int j = 0; j < w; j++) {
+  for (int i = 0; i < board.length; i++) {
+    for (int j = 0; j < board[0].length; j++) {
       fill(255);
       rect(i*s, j*s, s, s);
       if(board[j][i] == 1) {
