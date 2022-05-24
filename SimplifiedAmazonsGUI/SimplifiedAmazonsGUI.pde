@@ -1,84 +1,104 @@
+/** 5x5 Game of the Amazons, GUI version
+ * @author Alexandra Kim
+ * @version 5-24-2022
+*/
+
 int h = 5; int w = 5; int s = 100; // s is the square size
 int[][]board;
 int pt; // player turn
 int clicks; // times mouse has been clicked
 int t; // time
+int origT; // time the game started
 String displayText;
 PImage rqueen;
 PImage bqueen;
 int x, y, prevX, prevY, moveX, moveY;
-boolean displayLine, done, restart;
+boolean displayLine, done, restart, showRules, start;
+//String rules = "Players alternate moves. Each turn, an Amazon moves to a square, " + 
+    //"then shoots an arrow (orthogonally or diagonally) to burn another square. " + 
+    //"The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. " + 
+    //"The player who cannot make a move loses.";
 
 void setup() {
-  surface.setTitle("Game of the Amazons");
-  size(1000, 500);
-  ellipseMode(CORNER);
-  pixelDensity(2);
-  background(173, 216, 230);
-  frameRate(120);
   // variable initializations
-  t = millis();
+  t = millis(); origT = millis();
   board = initialBoard(5);
   rqueen = loadImage("redqueen.png");
   bqueen = loadImage("blackqueen.png");
   done = false;
   restart = false;
   displayText = "";
-  pt = 1; // player turn
+  pt = 1; 
   clicks = 1;
-
-  // start instructions
-  textSize(24);
-  text("Let's begin! Black moves first.", 625, 210);
-  textSize(18);
-  text("Press q to quit, r to restart", 650, 50);
+  // graphics settings
+  surface.setTitle("Game of the Amazons");
+  size(1000, 500);
+  ellipseMode(CORNER);
+  pixelDensity(2);
+  background(173, 216, 230);
 }
 
 void draw() {
-  fill(0);
-  stroke(0);
-  strokeWeight(4);
-
-  load(board);
-
-  if (restart) { // fresh game, resetting every variable
-    restart = false;
-    board = initialBoard(5);
-    clicks = 0;
-    t = millis();
-    pt = 1;
-    displayText = "New game...";
+  // start screen
+  if (millis() - origT < 4000) {
+    textSize(48);
+    text("WELCOME TO GAME OF THE AMAZONS!",125,200); 
+    // start instructions
+    textSize(24);
+    text("Let's begin! Black moves first.", 350, 250);
   }
-
-  if (done) {
+  else if (millis() - origT < 4500) {
     background(173, 216, 230);
-    textSize(48);
-    text("Thanks for playing!", 300, 250);
-    noLoop();
-  } else if (checkWinner(board, pt)) { // checking for winner
-    background(173, 216, 230);
-    textSize(48);
-    text("Congratulations player " + pt + "!", 250, 250);
-    noLoop();
-  } else {
-    // display whose turn it is
-    strokeWeight(0);
-    fill(pt == 1 ? 0 : 255, 0, 0);
-    rect(950, 450, 40, 40);
-
-    if (millis() - t > 3000) { // clear any messages
-      stroke(173, 216, 230);
-      fill(173, 216, 230);
-      rect(550, 100, 400, 250);
-    } else {
-      textSize(24);
-      text(displayText, 700, 250);
+  }
+  else {
+    fill(0);
+    stroke(0);
+    strokeWeight(4);
+  
+    load(board);
+    
+    textSize(18);
+    text("Press q to quit, r to restart", 650, 50);
+  
+    if (restart) { // fresh game, resetting every variable
+      restart = false;
+      board = initialBoard(5);
+      clicks = 0;
+      t = millis();
+      pt = 1;
+      displayText = "New game...";
     }
-
-    if (displayLine) { // if you are moving amazon
-      stroke(pt == 1 ? 0 : 255, 0, 0);
-      strokeWeight(10);
-      line(x*s+50, y*s+50, mouseX, mouseY);
+  
+    if (done) {
+      background(173, 216, 230);
+      textSize(48);
+      text("Thanks for playing!", 300, 250);
+      noLoop();
+    } else if (checkWinner(board, pt)) { // checking for winner
+      background(173, 216, 230);
+      textSize(48);
+      text("Congratulations player " + pt + "!", 250, 250);
+      noLoop();
+    } else {
+      // display whose turn it is
+      strokeWeight(0);
+      fill(pt == 1 ? 0 : 255, 0, 0);
+      rect(950, 450, 40, 40);
+  
+      if (millis() - t > 3000) { // clear any messages
+        stroke(173, 216, 230);
+        fill(173, 216, 230);
+        rect(550, 100, 400, 250);
+      } else {
+        textSize(24);
+        text(displayText, 700, 250);
+      }
+  
+      if (displayLine) { // if you are moving amazon
+        stroke(pt == 1 ? 0 : 255, 0, 0);
+        strokeWeight(10);
+        line(x*s+50, y*s+50, mouseX, mouseY);
+      }
     }
   }
 }
@@ -271,4 +291,6 @@ boolean checkWinner(int[][] board, int player) { // checks if player won by seei
 void keyPressed() {
   if (key == 'q') done = true;
   if (key == 'r') restart = true;
+  //if (key == 'm') showRules = true;
+  //if (key == 's') draw();
 }
