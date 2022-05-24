@@ -4,7 +4,14 @@ int pt = 1; // player turn
 int clicks = 0;
 int t; // time
 String displayText = "";
+PImage rqueen;
+PImage bqueen;
 
+int x, y, prevX, prevY, moveX, moveY;
+boolean displayLine;
+
+boolean done = false;
+boolean restart = false;
 
 void setup() {
     surface.setTitle("Game of the Amazons");
@@ -16,7 +23,11 @@ void setup() {
     textSize(24);
     text("Let's begin!", 700, 210);
     board = initialBoard(5);
-    //rules?
+    rqueen = loadImage("redqueen.png");
+    bqueen = loadImage("blackqueen.png");
+    
+    textSize(18);
+    text("Press q to quit, r to restart", 650, 50);
 }
 
 void draw() {
@@ -26,13 +37,27 @@ void draw() {
     
     load(board);
 
-    if (checkWinner(board, pt)) {
+    if (restart) { // fresh game, resetting every variable
+        restart = false;
+        board = initialBoard(5);
+        clicks = 0;
+        t = millis();
+        pt = 1;
+        displayText = "New game...";
+    }
+    
+    if (done) {
+        background(173, 216, 230);
+        textSize(48);
+        text("Thanks for playing!", 300, 250);
+        noLoop();
+    } else if (checkWinner(board, pt)) { // checking for winner 
         background(173, 216, 230);
         textSize(48);
         text("Congratulations player " + pt + "!", 250, 250);
         noLoop();
     } else {
-        if (millis() - t > 3000) { // clear the let's begin message
+        if (millis() - t > 3000) { // clear any messages
             stroke(173, 216, 230);
             fill(173, 216, 230);
             rect(550, 100, 400, 250);
@@ -42,15 +67,13 @@ void draw() {
         }
         
         if (displayLine) { // if you are moving amazon
-            stroke(0);
+            stroke(pt == 1 ? 0 : 255, 0, 0);
             strokeWeight(10);
             line(x*s+50, y*s+50, mouseX, mouseY);
         }
     }
+    
 }
-
-int x, y, prevX, prevY, moveX, moveY;
-boolean displayLine;
 
 void mousePressed() {
     displayLine = false;
@@ -67,7 +90,7 @@ void mousePressed() {
     y = mouseY / s;
 
     // determining type of move and legality
-    if ((x < s*w) && (y < w*s)) {
+    if ((x < w) && (y < h)) {
         if (clicks % 3 == 0) { // shooting an arrow
             if (!isLegalMove(board, moveY, moveX, y, x)) {
                 t = millis();
@@ -99,7 +122,7 @@ void mousePressed() {
                 displayLine = true;
             }
         }
-    }
+    } 
 }
 
 void load(int[][] board) {
@@ -109,10 +132,14 @@ void load(int[][] board) {
             rect(i*s, j*s, s, s);
             if (board[j][i] == 1) {
                 fill(0); // black
-                ellipse(i*s, j*s, s, s); // black amazon? make more realistic
+                image(bqueen, i*s+5, j*s+5, s-10, s-10);
+
+                //ellipse(i*s, j*s, s, s); // black amazon
             } else if (board[j][i] == 2) {
                 fill(255, 0, 0);
-                ellipse(i*s, j*s, s, s); // red amazon? make more realistic
+                image(rqueen, i*s+5, j*s+5, s-10, s-10);
+
+                // ellipse(i*s, j*s, s, s); // red amazon
             } else if (board[j][i] == 3) {
                 fill(105, 105, 105);
                 rect(i*s, j*s, s, s);
@@ -229,4 +256,9 @@ boolean checkWinner(int[][] board, int player) { // checks if player won by seei
         }
     }
     return true;
+}
+
+void keyPressed() {
+  if (key == 'q') done = true;
+  if (key == 'r') restart = true; 
 }
