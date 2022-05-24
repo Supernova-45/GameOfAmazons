@@ -43,7 +43,8 @@ function draw() {
     else if (millis() - origT < 4500) { // clear the screen
         background(173, 216, 230);
     } else {
-        fill(255);
+        fill(0);
+        stroke(0);
         strokeWeight(4);
 
         load(board);
