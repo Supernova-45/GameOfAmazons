@@ -33,7 +33,7 @@ function setup() {
 function draw() {
 
     if (millis() - origT < 4000) { // start screen
-        strokeWeight(4);
+        fill(255);
         textSize(48);
         text("WELCOME TO GAME OF THE AMAZONS!", 75, 200);
         // start instructions
