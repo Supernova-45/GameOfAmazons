@@ -19,32 +19,37 @@ int prevX, prevY, moveX, moveY;
 
 void mousePressed() {
   clicks++;
+  // determining whose turn it is
   if (clicks % 6 == 1) { pt = 1; }
   else if (clicks % 6 == 4) { pt = 2; }
+  
+  // mouse position 
   int x = mouseX / s;
   int y = mouseY / s;
+  
+  // determining type of move and legality
   if ((x < s*w) && (y < w*s)) {
     if (clicks % 3 == 0) { // shooting an arrow
       if (!isLegalMove(board, moveY, moveX, y, x)) {
-        x = mouseX / s;
-        y = mouseY / s;
+        clicks--;
+      } else {
+        board[y][x] = 3;
       }
-    board[y][x] = 3;
     } else if (clicks % 3 == 1) { // picking the piece to move
       if (board[y][x] != pt) {
         System.out.println("That's not your piece.");
-        x = mouseX / s;
-        y = mouseY / s;
-      }
+        clicks--;
+      } else {
       prevX = x; prevY = y;
+      }
     } else if (clicks % 3 == 2) { // the spot to move to
       if (!isLegalMove(board, prevY, prevX, y, x)) {
-        x = mouseX / s;
-        y = mouseY / s;
-      }
+        clicks--;
+      } else {
       moveX = x; moveY = y;
       board[prevY][prevX] = 0;
       board[y][x] = pt;
+      }
       
     } 
   }
