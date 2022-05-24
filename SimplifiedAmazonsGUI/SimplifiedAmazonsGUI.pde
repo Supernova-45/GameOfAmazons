@@ -175,7 +175,7 @@ int[][] initialBoard(int size) {
   return board;
 }
 
-public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
+boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
   if ((currRow == moveRow) && (currCol == moveCol)) {
     return false;
   } else if (currRow == moveRow) { // horizontal
