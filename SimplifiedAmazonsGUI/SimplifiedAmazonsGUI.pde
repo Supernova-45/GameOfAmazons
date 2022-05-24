@@ -23,29 +23,29 @@ void draw() {
     fill(0);
     stroke(0);
     strokeWeight(4);
-
-    if (checkWinner(board, pt)) {
-        textSize(48);
-        background(173, 216, 230);
-        text("Congratulations player " + pt + "!", 300, 250);
-        noLoop();
-    }
-
+    
     load(board);
 
-    if (millis() - t > 3000) { // clear the let's begin message
-        stroke(173, 216, 230);
-        fill(173, 216, 230);
-        rect(550, 100, 400, 250);
+    if (checkWinner(board, pt)) {
+        background(173, 216, 230);
+        textSize(48);
+        text("Congratulations player " + pt + "!", 250, 250);
+        noLoop();
     } else {
-        textSize(24);
-        text(displayText, 700, 250);
-    }
-
-    if (displayLine) { // if you are moving amazon
-        stroke(0);
-        strokeWeight(10);
-        line(x*s+50, y*s+50, mouseX, mouseY);
+        if (millis() - t > 3000) { // clear the let's begin message
+            stroke(173, 216, 230);
+            fill(173, 216, 230);
+            rect(550, 100, 400, 250);
+        } else {
+            textSize(24);
+            text(displayText, 700, 250);
+        }
+        
+        if (displayLine) { // if you are moving amazon
+            stroke(0);
+            strokeWeight(10);
+            line(x*s+50, y*s+50, mouseX, mouseY);
+        }
     }
 }
 
