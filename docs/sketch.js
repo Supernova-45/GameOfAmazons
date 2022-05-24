@@ -8,9 +8,7 @@ let rqueen;
 let bqueen;
 
 let x, y, prevX, prevY, moveX, moveY;
-let displayLine;
-
-let done, restart;
+let displayLine, done, restart;
 
 function setup() {
     // setTitle("Game of the Amazons");
@@ -19,13 +17,8 @@ function setup() {
     background(173, 216, 230);
     frameRate(120);
     t = millis();
-    textSize(24);
-    text("Let's begin! Black moves first.", 625, 210);
     rqueen = loadImage("redqueen.png");
     bqueen = loadImage("blackqueen.png");
-
-    textSize(18);
-    text("Press q to quit, r to restart", 650, 50);
 
     // initialize variables
     h = 5; w = 5; s = 100;
@@ -39,50 +32,65 @@ function setup() {
 }
 
 function draw() {
-    fill(0);
-    stroke(0);
-    strokeWeight(4);
 
-    load(board);
-
-    if (restart) { // fresh game, resetting every variable
-        restart = false;
-        board = initialBoard(5);
-    clicks = 0;
-    t = millis();
-    pt = 1;
-    displayText = "New game...";
+    if (millis() - origT < 4000) { // start screen
+        textSize(48);
+        text("WELCOME TO GAME OF THE AMAZONS!", 125, 200);
+        // start instructions
+        textSize(24);
+        text("Let's begin! Black moves first.", 350, 250);
     }
-
-    if (done) {
+    else if (millis() - origT < 4500) { // clear the screen
         background(173, 216, 230);
-        textSize(48);
-        text("Thanks for playing!", 300, 250);
-        noLoop();
-    } else if (checkWinner(board, pt)) { // checking for winner
-        background(173, 216, 230);
-        textSize(48);
-        text("Congratulations player " + pt + "!", 250, 250);
-        noLoop();
     } else {
-        // display whose turn it is
-        strokeWeight(0);
-        fill(pt == 1 ? 0 : 255, 0, 0);
-        rect(950, 450, 40, 40);
+        fill(0);
+        stroke(0);
+        strokeWeight(4);
 
-        if (millis() - t > 3000) { // clear any messages
-            stroke(173, 216, 230);
-            fill(173, 216, 230);
-            rect(550, 100, 400, 250);
-        } else {
-            textSize(24);
-            text(displayText, 700, 250);
+        load(board);
+
+        textSize(18);
+        text("Press q to quit, r to restart", 650, 50);
+
+        if (restart) { // fresh game, resetting every variable
+            restart = false;
+            board = initialBoard(5);
+            clicks = 0;
+            t = millis();
+            pt = 1;
+            displayText = "New game...";
         }
 
-        if (displayLine) { // if you are moving amazon
-            stroke(pt == 1 ? 0 : 255, 0, 0);
-            strokeWeight(10);
-            line(x*s+50, y*s+50, mouseX, mouseY);
+        if (done) {
+            background(173, 216, 230);
+            textSize(48);
+            text("Thanks for playing!", 300, 250);
+            noLoop();
+        } else if (checkWinner(board, pt)) { // checking for winner
+            background(173, 216, 230);
+            textSize(48);
+            text("Congratulations player " + pt + "!", 250, 250);
+            noLoop();
+        } else {
+            // display whose turn it is
+            strokeWeight(0);
+            fill(pt == 1 ? 0 : 255, 0, 0);
+            rect(950, 450, 40, 40);
+
+            if (millis() - t > 3000) { // clear any messages
+                stroke(173, 216, 230);
+                fill(173, 216, 230);
+                rect(550, 100, 400, 250);
+            } else {
+                textSize(24);
+                text(displayText, 700, 250);
+            }
+
+            if (displayLine) { // if you are moving amazon
+                stroke(pt == 1 ? 0 : 255, 0, 0);
+                strokeWeight(10);
+                line(x * s + 50, y * s + 50, mouseX, mouseY);
+            }
         }
     }
 }
