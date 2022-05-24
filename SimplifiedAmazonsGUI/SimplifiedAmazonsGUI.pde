@@ -2,24 +2,46 @@ int h = 5, w = 5, s = 100; // s is the square size
 int[][]board = new int[h][w];
 int pt = 1; // player turn
 int clicks = 0;
+int t; // time
+String displayText = ""; 
+
 
 void setup() {
   surface.setTitle("Game of the Amazons");
   size(1000, 500); ellipseMode(CORNER);
   background(173,216,230);
   frameRate(120);
+  t = millis();
+  textSize(24);
+  text("Let's begin!", 700, 210);
   board = initialBoard(5);
+  //rules?
 }
 
 void draw() {
+  fill(0);
+  stroke(0);
   load(board);
   if (checkWinner(board, pt)) {
     println("Congratulations player " + pt + ", you've triumphed!");
     clear();
   }
+  if (millis() - t > 3000) { // clear the let's begin message
+    stroke(173,216,230);
+    fill(173,216,230);
+    rect(550, 100, 400, 250);
+  } else {
+    textSize(24);
+    text(displayText, 700, 250);
+  }
+  
+  if (clicks % 3 == 1) { // if you are moving amazon
+    fill(0);
+    line(x*s+50, y*s+50, mouseX, mouseY);
+  } 
 }
 
-int prevX, prevY, moveX, moveY;
+int x, y, prevX, prevY, moveX, moveY;
 
 void mousePressed() {
   clicks++;
@@ -28,8 +50,8 @@ void mousePressed() {
   else if (clicks % 6 == 4) { pt = 2; }
   
   // mouse position 
-  int x = mouseX / s;
-  int y = mouseY / s;
+  x = mouseX / s;
+  y = mouseY / s;
   
   // determining type of move and legality
   if ((x < s*w) && (y < w*s)) {
@@ -42,7 +64,8 @@ void mousePressed() {
       }
     } else if (clicks % 3 == 1) { // picking the piece to move
       if (board[y][x] != pt) {
-        println("That's not your piece.");
+        t = millis();
+        displayText = "Not your piece.";
         clicks--;
       } else {
       prevX = x; prevY = y;
