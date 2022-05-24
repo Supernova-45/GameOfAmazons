@@ -35,7 +35,7 @@ function draw() {
     if (millis() - origT < 4000) { // start screen
         fill(255);
         textSize(48);
-        text("WELCOME TO GAME OF THE AMAZONS!", 75, 200);
+        text("WELCOME TO GAME OF THE AMAZONS!", 50, 200);
         // start instructions
         textSize(24);
         text("Let's begin! Black moves first.", 350, 250);
@@ -44,7 +44,6 @@ function draw() {
         background(173, 216, 230);
     } else {
         fill(0);
-        stroke(0);
         strokeWeight(4);
 
         load(board);
@@ -135,6 +134,8 @@ function mousePressed() {
                 displayLine = true;
             }
         }
+    } else {
+        clicks--;
     }
 
     clicks++;
