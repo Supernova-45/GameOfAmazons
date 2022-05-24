@@ -15,11 +15,12 @@ function setup() {
     ellipseMode(CORNER);
     background(173, 216, 230);
     frameRate(120);
+    pixelDensity(2);
+
+    // initialize variables
     origT = millis();  t = millis();
     rqueen = loadImage("redqueen.png");
     bqueen = loadImage("blackqueen.png");
-
-    // initialize variables
     h = 5; w = 5; s = 100;
     board = new Array(h);
     board = initialBoard(5);
@@ -33,7 +34,8 @@ function setup() {
 function draw() {
 
     if (millis() - origT < 3000) { // start screen
-        fill(255);
+        background(173, 216, 230);
+        fill(0,0,205);
         textSize(48);
         text("WELCOME TO GAME OF THE AMAZONS!", 25, 200);
         // start instructions
@@ -49,7 +51,7 @@ function draw() {
         load(board);
 
         textSize(18);
-        stroke(255);
+        fill(0,0,205);
         strokeWeight(0);
         text("Press q to quit, r to restart", 650, 50);
 
