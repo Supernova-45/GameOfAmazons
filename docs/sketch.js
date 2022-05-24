@@ -32,7 +32,7 @@ function setup() {
 
 function draw() {
 
-    if (millis() - origT < 4000) { // start screen
+    if (millis() - origT < 3000) { // start screen
         fill(255);
         textSize(48);
         text("WELCOME TO GAME OF THE AMAZONS!", 25, 200);
@@ -40,7 +40,7 @@ function draw() {
         textSize(24);
         text("Let's begin! Black moves first.", 350, 250);
     }
-    else if (millis() - origT < 4500) { // clear the screen
+    else if (millis() - origT < 3500) { // clear the screen
         background(173, 216, 230);
     } else {
         stroke(0);
@@ -56,7 +56,7 @@ function draw() {
         if (restart) { // fresh game, resetting every variable
             restart = false;
             board = initialBoard(5);
-            clicks = 0;
+            clicks = 1;
             t = millis();
             pt = 1;
             displayText = "New game...";
