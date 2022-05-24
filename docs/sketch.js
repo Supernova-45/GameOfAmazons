@@ -43,13 +43,14 @@ function draw() {
     else if (millis() - origT < 4500) { // clear the screen
         background(173, 216, 230);
     } else {
-        fill(0);
         stroke(0);
         strokeWeight(4);
 
         load(board);
 
         textSize(18);
+        stroke(255);
+        strokeWeight(0);
         text("Press q to quit, r to restart", 650, 50);
 
         if (restart) { // fresh game, resetting every variable
