@@ -292,5 +292,4 @@ void keyPressed() {
   if (key == 'q') done = true;
   if (key == 'r') restart = true;
   //if (key == 'm') showRules = true;
-  //if (key == 's') draw();
 }
