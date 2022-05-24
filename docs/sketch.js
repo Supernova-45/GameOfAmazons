@@ -2,7 +2,7 @@ let h, w, s; // s is the square size
 let board;
 let pt; // player turn
 let clicks;
-let t; // time
+let t, origT; // time
 let displayText;
 let rqueen;
 let bqueen;
@@ -16,7 +16,7 @@ function setup() {
     ellipseMode(CORNER);
     background(173, 216, 230);
     frameRate(120);
-    t = millis();
+    origT = millis();  t = millis();
     rqueen = loadImage("redqueen.png");
     bqueen = loadImage("blackqueen.png");
 
