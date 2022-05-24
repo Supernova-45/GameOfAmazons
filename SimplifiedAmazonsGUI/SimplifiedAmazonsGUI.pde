@@ -21,11 +21,17 @@ void setup() {
 void draw() {
   fill(0);
   stroke(0);
-  load(board);
+  strokeWeight(4);
+
   if (checkWinner(board, pt)) {
-    println("Congratulations player " + pt + ", you've triumphed!");
-    clear();
+    textSize(48);
+    background(173,216,230);
+    text("Congratulations player " + pt + "!", 300, 250);
+    noLoop();
   }
+  
+  load(board);
+
   if (millis() - t > 3000) { // clear the let's begin message
     stroke(173,216,230);
     fill(173,216,230);
@@ -35,15 +41,18 @@ void draw() {
     text(displayText, 700, 250);
   }
   
-  if (clicks % 3 == 1) { // if you are moving amazon
-    fill(0);
+  if (displayLine) { // if you are moving amazon
+    stroke(0);
+    strokeWeight(10);
     line(x*s+50, y*s+50, mouseX, mouseY);
   } 
 }
 
 int x, y, prevX, prevY, moveX, moveY;
+boolean displayLine;
 
 void mousePressed() {
+  displayLine = false;
   clicks++;
   // determining whose turn it is
   if (clicks % 6 == 1) { pt = 1; }
@@ -57,7 +66,8 @@ void mousePressed() {
   if ((x < s*w) && (y < w*s)) {
     if (clicks % 3 == 0) { // shooting an arrow
       if (!isLegalMove(board, moveY, moveX, y, x)) {
-        println("Not legal.");
+        t = millis();
+        displayText = "Not legal.";
         clicks--;
       } else {
         board[y][x] = 3;
@@ -69,17 +79,19 @@ void mousePressed() {
         clicks--;
       } else {
       prevX = x; prevY = y;
+      displayLine = true;
       }
     } else if (clicks % 3 == 2) { // the spot to move to
       if (!isLegalMove(board, prevY, prevX, y, x)) {
-        println("Not legal.");
+        t = millis();
+        displayText = "Not legal.";
         clicks--;
       } else {
       moveX = x; moveY = y;
       board[prevY][prevX] = 0;
       board[y][x] = pt;
+      displayLine = true;
       }
-      
     }
   }
 }
@@ -126,7 +138,9 @@ int[][] initialBoard(int size) {
 }
 
 public static boolean isLegalMove(int[][] board, int currRow, int currCol, int moveRow, int moveCol) {
-    if (currRow == moveRow) { // horizontal
+   if ((currRow == moveRow) && (currCol == moveCol)) {
+      return false;
+   } else if (currRow == moveRow) { // horizontal
         if (currCol < moveCol) {
             for (int c = currCol + 1; c <= moveCol; c++) {
                 if (board[currRow][c] != 0) {
@@ -156,7 +170,7 @@ public static boolean isLegalMove(int[][] board, int currRow, int currCol, int m
         }
 
     } else if (Math.abs(currCol - moveCol) == Math.abs(currRow - moveRow)) { // 4 cases for diagonal moves
-        for (int a = 1; a < Math.abs(currRow - moveRow); a++) {
+        for (int a = 1; a <= Math.abs(currRow - moveRow); a++) {
             if (currCol < moveCol) {
                 if (currRow < moveRow) {
                     if (board[currRow + a][currCol + a] != 0) {
