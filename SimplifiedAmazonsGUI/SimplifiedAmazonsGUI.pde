@@ -1,31 +1,35 @@
-int h = 5, w = 5, s = 100; // s is the square size
-int[][]board = new int[h][w];
-int pt = 1; // player turn
-int clicks = 1;
+int h = 5; int w = 5; int s = 100; // s is the square size
+int[][]board;
+int pt; // player turn
+int clicks; // times mouse has been clicked
 int t; // time
-String displayText = "";
+String displayText;
 PImage rqueen;
 PImage bqueen;
-
 int x, y, prevX, prevY, moveX, moveY;
-boolean displayLine;
-
-boolean done = false;
-boolean restart = false;
+boolean displayLine, done, restart;
 
 void setup() {
   surface.setTitle("Game of the Amazons");
   size(1000, 500);
   ellipseMode(CORNER);
+  pixelDensity(2);
   background(173, 216, 230);
   frameRate(120);
+  // variable initializations
   t = millis();
-  textSize(24);
-  text("Let's begin! Black moves first.", 625, 210);
   board = initialBoard(5);
   rqueen = loadImage("redqueen.png");
   bqueen = loadImage("blackqueen.png");
+  done = false;
+  restart = false;
+  displayText = "";
+  pt = 1; // player turn
+  clicks = 1;
 
+  // start instructions
+  textSize(24);
+  text("Let's begin! Black moves first.", 625, 210);
   textSize(18);
   text("Press q to quit, r to restart", 650, 50);
 }
@@ -78,6 +82,7 @@ void draw() {
     }
   }
 }
+
 
 void mousePressed() {
 
