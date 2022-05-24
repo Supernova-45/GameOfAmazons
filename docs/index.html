@@ -4,11 +4,22 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8">
 
+    <style>
+      main {
+        margin: 10px;
+        padding: 5px;
+        background-color: rgb(223, 197, 255);
+      } 
+    </style>
   </head>
-  <body>
+  <body style = "background-color: rgb(240, 255, 253);">
     <main>
+      <h1>5x5 Game of the Amazons</h1>
+      <p>Players alternate moves. Each turn, an Amazon moves to a square, then shoots an arrow (orthogonally or diagonally) to burn another square. The arrows and Amazons cannot cross (or land on) other Amazons or claimed squares. The player who cannot make a move loses.</p>
+      
     </main>
-    <script src="sketch.js"></script>
   
+    <script src="sketch.js"></script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
 
 </body></html>

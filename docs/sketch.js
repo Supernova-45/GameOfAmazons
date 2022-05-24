@@ -11,7 +11,6 @@ let x, y, prevX, prevY, moveX, moveY;
 let displayLine, done, restart;
 
 function setup() {
-    // setTitle("Game of the Amazons");
     createCanvas(1000, 500);
     ellipseMode(CORNER);
     background(173, 216, 230);
@@ -34,8 +33,9 @@ function setup() {
 function draw() {
 
     if (millis() - origT < 4000) { // start screen
+        strokeWeight(4);
         textSize(48);
-        text("WELCOME TO GAME OF THE AMAZONS!", 125, 200);
+        text("WELCOME TO GAME OF THE AMAZONS!", 75, 200);
         // start instructions
         textSize(24);
         text("Let's begin! Black moves first.", 350, 250);
