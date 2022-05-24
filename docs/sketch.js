@@ -35,7 +35,7 @@ function draw() {
     if (millis() - origT < 4000) { // start screen
         fill(255);
         textSize(48);
-        text("WELCOME TO GAME OF THE AMAZONS!", 50, 200);
+        text("WELCOME TO GAME OF THE AMAZONS!", 25, 200);
         // start instructions
         textSize(24);
         text("Let's begin! Black moves first.", 350, 250);
@@ -43,7 +43,7 @@ function draw() {
     else if (millis() - origT < 4500) { // clear the screen
         background(173, 216, 230);
     } else {
-        fill(0);
+        fill(255);
         strokeWeight(4);
 
         load(board);
