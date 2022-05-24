@@ -13,6 +13,10 @@ void setup() {
 
 void draw() {
   load(board);
+  if (checkWinner(board, pt)) {
+    println("Congratulations player " + pt + ", you've triumphed!");
+    clear();
+  }
 }
 
 int prevX, prevY, moveX, moveY;
@@ -31,19 +35,21 @@ void mousePressed() {
   if ((x < s*w) && (y < w*s)) {
     if (clicks % 3 == 0) { // shooting an arrow
       if (!isLegalMove(board, moveY, moveX, y, x)) {
+        println("Not legal.");
         clicks--;
       } else {
         board[y][x] = 3;
       }
     } else if (clicks % 3 == 1) { // picking the piece to move
       if (board[y][x] != pt) {
-        System.out.println("That's not your piece.");
+        println("That's not your piece.");
         clicks--;
       } else {
       prevX = x; prevY = y;
       }
     } else if (clicks % 3 == 2) { // the spot to move to
       if (!isLegalMove(board, prevY, prevX, y, x)) {
+        println("Not legal.");
         clicks--;
       } else {
       moveX = x; moveY = y;
@@ -51,7 +57,7 @@ void mousePressed() {
       board[y][x] = pt;
       }
       
-    } 
+    }
   }
 }
 
@@ -152,6 +158,33 @@ public static boolean isLegalMove(int[][] board, int currRow, int currCol, int m
         }
     } else { // not diagonal, horizontal or vertical
         return false;
+    }
+    return true;
+}
+
+boolean checkWinner(int[][] board, int player) { // checks if player won by seeing if other player has a move
+    // next player's turn
+    player++;
+    if (player % 2 == 0) {
+        player = 2;
+    } else {
+        player = 1;
+    }
+
+    for (int r = 0; r < board.length; r++) {
+        for (int c = 0; c < board[0].length; c++) {
+            if (board[r][c] == player) { // checking for location of the amazons
+                for (int i = 0; i < board.length; i++) {
+                    for (int j = 0; j < board[0].length; j++) {
+                        if (board[i][j] == 0) {
+                            if (isLegalMove(board, r, c, i, j)) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     return true;
 }
