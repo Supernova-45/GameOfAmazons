@@ -1,4 +1,4 @@
-let h, w, s; // s is the square createCanvas
+let h, w, s; // s is the square size
 let board;
 let pt; // player turn
 let clicks;
@@ -13,15 +13,14 @@ let displayLine;
 let done, restart;
 
 function setup() {
-    surface.setTitle("Game of the Amazons");
+    // setTitle("Game of the Amazons");
     createCanvas(1000, 500);
     ellipseMode(CORNER);
     background(173, 216, 230);
-    frameRate()(120);
+    frameRate(120);
     t = millis();
     textSize(24);
     text("Let's begin! Black moves first.", 625, 210);
-    board = initialBoard(5);
     rqueen = loadImage("redqueen.png");
     bqueen = loadImage("blackqueen.png");
 
@@ -29,8 +28,9 @@ function setup() {
     text("Press q to quit, r to restart", 650, 50);
 
     // initialize variables
-    h = 5, w = 5, s = 100;
+    h = 5; w = 5; s = 100;
     board = new Array(h);
+    board = initialBoard(5);
     pt = 1;
     clicks = 1;
     displayText = "";
@@ -91,8 +91,8 @@ function mousePressed() {
 
     displayLine = false;
     // mouse position
-    x = mouseX / s;
-    y = mouseY / s;
+    x = Math.floor(mouseX / s);
+    y = Math.floor(mouseY / s);
 
     // determining type of move and legality
     if ((x < w) && (y < h)) {
@@ -163,13 +163,15 @@ function load(board) {
 }
 
 function initialBoard(size) {
-    let board = new Array(createCanvas);
-    for (let r = 0; r < board.length; r++) {
-        board[r] = new Array(board.length);
-        for (let c = 0; c < board[0].length; c++) {
-            board[r][c] = 0;
+    let board = [];
+    
+    for (let r = 0; r < size; r++) {
+        board[r] = [];
+        for (let c = 0; c < size; c++) {
+          board[r][c] = 0;
         }
     }
+  
     // black queens
     board[0][1] = 1;
     board[0][3] = 1;
