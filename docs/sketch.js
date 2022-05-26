@@ -97,9 +97,9 @@ function draw() {
                 rect(550, 100, 400, 250);
             } else {
                 //clears previous messages
-                stroke(173, 216, 230);
-                fill(173, 216, 230);
-                rect(550, 100, 400, 250);
+                //stroke(173, 216, 230);
+                //fill(173, 216, 230);
+                //rect(550, 100, 400, 250);
 
                 fill(pt == 1 ? 0 : 255, 0, 0);
                 textSize(24);
