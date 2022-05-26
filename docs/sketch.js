@@ -13,7 +13,7 @@ let displayLine, done, restart;
 let myFont;
 
 function preload() {
-  myFont = loadFont('Lato-regular.ttf');
+  myFont = loadFont('docs/Lato-regular.ttf');
 }
 
 function setup() {
