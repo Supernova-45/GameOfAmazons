@@ -7,7 +7,7 @@ let displayText;
 let rqueen;
 let bqueen;
 
-let x, y, prevX, prevY, moveX, moveY;
+let x, y, prevX, prevY, moveX, moveY, currX, currY; // currX and currY are the piece that you clicked to move
 let displayLine, done, restart;
 
 let myFont;
@@ -96,9 +96,12 @@ function draw() {
                 fill(173, 216, 230);
                 rect(550, 100, 400, 250);
             } else {
-                //fill(173, 216, 230);
-                //rect(550, 100, 400, 250);
-                //fill(0,0,205);
+                //clears previous messages
+                stroke(173, 216, 230);
+                fill(173, 216, 230);
+                rect(550, 100, 400, 250);
+
+                fill(pt == 1 ? 0 : 255, 0, 0);
                 textSize(24);
                 text(displayText, 700, 250);
             }
@@ -135,6 +138,7 @@ function mousePressed() {
                 displayText = "Not your piece.";
                 clicks--;
             } else {
+                currX = x; currY = y;
                 prevX = x;
                 prevY = y;
                 displayLine = true;
@@ -145,6 +149,7 @@ function mousePressed() {
                 displayText = "Not legal.";
                 clicks--;
             } else {
+                currX = x; currY = y;
                 moveX = x;
                 moveY = y;
                 board[prevY][prevX] = 0;
@@ -173,14 +178,14 @@ function load(board) {
             if (board[j][i] == 1) {
                 fill(0); // black
                 image(bqueen, i*s+5, j*s+5, s-10, s-10);
-                if ((i == x) && (j == y)) { 
+                if ((i == currX) && (j == currY)) { 
                     fill(0, 0, 0, 50);
                     rect(i*s, j*s, s, s);
                 }
             } else if (board[j][i] == 2) {
                 fill(255, 0, 0);
                 image(rqueen, i*s+5, j*s+5, s-10, s-10);
-                if ((i == x) && (j == y)) { 
+                if ((i == currX) && (j == currY)) { 
                     fill(255, 0, 0, 50);
                     rect(i*s, j*s, s, s);
                 }
