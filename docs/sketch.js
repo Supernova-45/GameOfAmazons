@@ -10,12 +10,18 @@ let bqueen;
 let x, y, prevX, prevY, moveX, moveY;
 let displayLine, done, restart;
 
+let myFont;
+
+function preload() {
+  myFont = loadFont('Lato-regular.ttf');
+}
+
 function setup() {
     createCanvas(1000, 500);
     ellipseMode(CORNER);
     background(173, 216, 230);
     frameRate(120);
-    pixelDensity(2);
+    textFont(myFont);
 
     // initialize variables
     origT = millis();  t = millis();
@@ -41,13 +47,13 @@ function draw() {
         // start instructions
         textSize(24);
         text("Let's begin! Black moves first.", 350, 250);
+
     }
     else if (millis() - origT < 3500) { // clear the screen
         background(173, 216, 230);
     } else {
         stroke(0);
         strokeWeight(4);
-
         load(board);
 
         textSize(18);
@@ -61,6 +67,7 @@ function draw() {
             clicks = 1;
             t = millis();
             pt = 1;
+            displayLine = false;
             displayText = "New game...";
         }
 
@@ -72,7 +79,11 @@ function draw() {
         } else if (checkWinner(board, pt)) { // checking for winner
             background(173, 216, 230);
             textSize(48);
-            text("Congratulations player " + pt + "!", 250, 250);
+            if (pt == 1) {
+                text("Congratulations black!", 300, 250);
+            } else {
+                text("Congratulations red!", 300, 250);
+            }
             noLoop();
         } else {
             // display whose turn it is
@@ -80,11 +91,14 @@ function draw() {
             fill(pt == 1 ? 0 : 255, 0, 0);
             rect(950, 450, 40, 40);
 
-            if (millis() - t > 3000) { // clear any messages
+            if (millis() - t > 2000) { // clear any messages
                 stroke(173, 216, 230);
                 fill(173, 216, 230);
                 rect(550, 100, 400, 250);
             } else {
+                //fill(173, 216, 230);
+                //rect(550, 100, 400, 250);
+                //fill(0,0,205);
                 textSize(24);
                 text(displayText, 700, 250);
             }
@@ -92,7 +106,7 @@ function draw() {
             if (displayLine) { // if you are moving amazon
                 stroke(pt == 1 ? 0 : 255, 0, 0);
                 strokeWeight(10);
-                line(x * s + 50, y * s + 50, mouseX, mouseY);
+                if (mouseX < 500 ) line(x * s + 50, y * s + 50, mouseX, mouseY);
             }
         }
     }
@@ -155,17 +169,21 @@ function load(board) {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board.length; j++) {
             fill(255);
-            rect(i*s, j*s, s, s);
+            rect(i * s, j * s, s, s);
             if (board[j][i] == 1) {
                 fill(0); // black
                 image(bqueen, i*s+5, j*s+5, s-10, s-10);
-
-                //ellipse(i*s, j*s, s, s); // black amazon
+                if ((i == x) && (j == y)) { 
+                    fill(0, 0, 0, 50);
+                    rect(i*s, j*s, s, s);
+                }
             } else if (board[j][i] == 2) {
                 fill(255, 0, 0);
                 image(rqueen, i*s+5, j*s+5, s-10, s-10);
-
-                // ellipse(i*s, j*s, s, s); // red amazon
+                if ((i == x) && (j == y)) { 
+                    fill(255, 0, 0, 50);
+                    rect(i*s, j*s, s, s);
+                }
             } else if (board[j][i] == 3) {
                 fill(105, 105, 105);
                 rect(i*s, j*s, s, s);
